@@ -5,12 +5,13 @@ public class Main {
 
         Interface screen = new Interface();
 
-        //prints header on screen
-        screen.startScreen();
-
         //prints main menu on screen and gets user choice
         //repeats until user chooses to exit program
         do {
+            //prints header on screen
+            screen.startScreen();
+
+            //prints main menu
             choiceMainMenu = screen.mainMenu();
 
             switch (choiceMainMenu) {

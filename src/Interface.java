@@ -2,23 +2,45 @@ import java.util.Scanner;
 
 public class Interface {
 
-    //constant with the software name to calculate size of some menus. needs to be even sized.
-    private static final String softwareName = "Food orders management system - Main Menu:";
+    //constant with the software name to calculate size of some menus.
+    private static final String SOFTWARE_NAME = "Food orders management system";
+
+    //prints a centralized header with the software name and a message
+    //pre-conditions: none
+    //post-conditions: header printed
+    private void printHeader(String header){
+        String message = SOFTWARE_NAME + " - " + header;
+        int messageSize = message.length();
+        int i;
+
+        for(i = 0; i < ((100-messageSize)/2); i++) System.out.print(" ");
+        System.out.print(message);
+        for(i = 0; i < ((100-messageSize)/2); i++) System.out.print(" ");
+        System.out.println();
+    }
 
     //prints on screen a header with the software name and authors' name
     //pre-conditions: none
     //post-conditions: header printed on screen
     public void startScreen(){
         int i;
-        int messageSize = softwareName.length();
+        int messageSize = SOFTWARE_NAME.length();
+        Validation validate = new Validation();
 
         for(i = 0; i < 100;i++) System.out.print("*");
         System.out.println();
 
         for(i = 0; i < 10; i++) System.out.print("*");
         for(i = 0; i < ((80-messageSize)/2); i++) System.out.print(" ");
-        System.out.print("Food orders management system.");
-        for(i = 0; i < ((80-messageSize)/2); i++) System.out.print(" ");
+        System.out.print(SOFTWARE_NAME);
+        //prints an even number of spaces if message size is even
+        //prints odd number of spaces if message size is odd
+        if(validate.isEven(messageSize)) {
+            for (i = 0; i < ((80 - messageSize) / 2); i++) System.out.print(" ");
+        }
+        else {
+            for (i = 0; i < ((80 + 1 - messageSize) / 2); i++) System.out.print(" ");
+        }
         for(i = 0; i < 10; i++) System.out.print("*");
         System.out.println();
 
@@ -43,18 +65,19 @@ public class Interface {
     //post-conditions: main menu printed on screen until a valid user choice
     //then returns user choice
     public int mainMenu(){
-        int i;
-        int messageSize = softwareName.length();
-        Scanner scan = new Scanner(System.in);
+
+        //number of choices from menu
+        final int NUMBER_CHOICES = 4;
+
         int choice = 0;
         boolean valid = false;
 
-        for(i = 0; i < ((100-messageSize)/2); i++) System.out.print(" ");
-        System.out.print(softwareName);
-        for(i = 0; i < ((100-messageSize)/2); i++) System.out.print(" ");
-        System.out.println();
+        Scanner scan = new Scanner(System.in);
 
-        do{
+        //prints header
+        this.printHeader("Main Menu");
+
+    do{
         System.out.println();
         System.out.println("1. Client Menu.");
         System.out.println("2. Food Menu.");
@@ -65,7 +88,7 @@ public class Interface {
         if (scan.hasNextInt()) {
             choice = scan.nextInt();
             //checks if is a valid input
-            if(choice>=1 && choice<=4 )valid = true;
+            if(choice>=1 && choice<=NUMBER_CHOICES )valid = true;
             else{
                 System.out.println("ERROR: Invalid input.");
                 scan.nextLine();
@@ -76,7 +99,8 @@ public class Interface {
         }
     }while(!valid);
 
-        if(choice != 4) return choice;
+        //returns 0 in case of 'exit program'
+        if(choice != NUMBER_CHOICES) return choice;
         else return 0;
     }
 
@@ -88,6 +112,12 @@ public class Interface {
         Scanner scan = new Scanner(System.in);
         int choice = 0;
         boolean valid = false;
+
+        //number of choices from menu
+        final int NUMBER_CHOICES = 7;
+
+        //prints header
+        this.printHeader("Client Menu");
 
         //will repeat until valid input
         do {
@@ -104,7 +134,7 @@ public class Interface {
             if (scan.hasNextInt()) {
                 choice = scan.nextInt();
                 //checks if is a valid input
-                if(choice>=1 && choice<=7 )valid = true;
+                if(choice>=1 && choice<=NUMBER_CHOICES )valid = true;
                 else{
                     System.out.println("ERROR: Invalid input.");
                     scan.nextLine();
@@ -115,9 +145,11 @@ public class Interface {
             }
         }while(!valid);
 
-        if(choice != 7) return choice;
+        //returns 0 in case of 'exit to main menu'
+        if(choice != NUMBER_CHOICES) return choice;
         else return 0;
     }
+
     //prints food menu, reads an int and returns it if it's valid
     //pre-conditions: none
     //post-conditions: returns a valid user choice. will return 0 in the case
@@ -126,6 +158,12 @@ public class Interface {
         Scanner scan = new Scanner(System.in);
         int choice = 0;
         boolean valid = false;
+
+        //number of choices from menu
+        final int NUMBER_CHOICES = 6;
+
+        //prints header
+        this.printHeader("Food Menu");
 
         //will repeat until valid input
         do {
@@ -141,7 +179,7 @@ public class Interface {
             if (scan.hasNextInt()) {
                 choice = scan.nextInt();
                 //checks if is a valid input
-                if(choice>=1 && choice<=6 )valid = true;
+                if(choice>=1 && choice<=NUMBER_CHOICES )valid = true;
                 else{
                     System.out.println("ERROR: Invalid input.");
                     scan.nextLine();
@@ -152,7 +190,8 @@ public class Interface {
             }
         }while(!valid);
 
-        if(choice != 6) return choice;
+        //returns 0 in case of 'exit to main menu'
+        if(choice != NUMBER_CHOICES) return choice;
         else return 0;
 
     }
