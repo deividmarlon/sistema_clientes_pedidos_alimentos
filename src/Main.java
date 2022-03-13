@@ -32,7 +32,12 @@ public class Main {
                     }
                     break;
                 case 3:
-                    //TODO report interface menu
+                    choiceSubMenu = screen.reportMenu();
+                    if(choiceSubMenu != 0){
+                        //TODO create report class
+                        //Report report = new Report
+                        //report.configReport(choiceSubMenu);
+                    }
                     break;
             }
         }while(choiceMainMenu != 0);
