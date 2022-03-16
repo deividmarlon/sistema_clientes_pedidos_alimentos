@@ -110,13 +110,13 @@ public class Interface {
     //post-conditions: returns a valid user choice. will return 0 in the case
     //to go back to main menu
     public int clientMenu() {
-        int choice = 0;
-        boolean valid = false;
+        int choice = -1;
 
         //number of choices from menu
         final int NUMBER_CHOICES = 7;
 
         Scanner scan = new Scanner(System.in);
+        Validation validate = new Validation();
 
         //prints header
         this.printHeader("Client Menu");
@@ -132,20 +132,9 @@ public class Interface {
             System.out.println("6. View full history.");
             System.out.println("7. Exit to main menu");
 
-            //checks if it's int
-            if (scan.hasNextInt()) {
-                choice = scan.nextInt();
-                //checks if is a valid input
-                if(choice>=1 && choice<=NUMBER_CHOICES )valid = true;
-                else{
-                    System.out.println("ERROR: Invalid input.");
-                    scan.nextLine();
-                }
-            }else{
-                System.out.println("ERROR: Invalid input.");
-                scan.nextLine();
-            }
-        }while(!valid);
+            choice = validate.getValidChoice(NUMBER_CHOICES);
+
+        }while(choice < 0);
 
         //returns 0 in case of 'exit to main menu'
         if(choice != NUMBER_CHOICES) return choice;
@@ -157,13 +146,13 @@ public class Interface {
     //post-conditions: returns a valid user choice. will return 0 in the case
     //to go back to main menu
     public int foodMenu(){
-        int choice = 0;
-        boolean valid = false;
+        int choice = -1;
 
         //number of choices from menu
         final int NUMBER_CHOICES = 6;
 
         Scanner scan = new Scanner(System.in);
+        Validation validate = new Validation();
 
         //prints header
         this.printHeader("Food Menu");
@@ -178,20 +167,9 @@ public class Interface {
             System.out.println("5. List food");
             System.out.println("6. Exit to main menu");
 
-            //checks if it's int
-            if (scan.hasNextInt()) {
-                choice = scan.nextInt();
-                //checks if is a valid input
-                if(choice>=1 && choice<=NUMBER_CHOICES )valid = true;
-                else{
-                    System.out.println("ERROR: Invalid input.");
-                    scan.nextLine();
-                }
-            }else{
-                System.out.println("ERROR: Invalid input.");
-                scan.nextLine();
-            }
-        }while(!valid);
+            choice = validate.getValidChoice(NUMBER_CHOICES);
+
+        }while(choice < 0);
 
         //returns 0 in case of 'exit to main menu'
         if(choice != NUMBER_CHOICES) return choice;
@@ -199,14 +177,18 @@ public class Interface {
 
     }
 
+    //prints report menu, reads an int and returns it if it's valid
+    //pre-conditions: none
+    //post-conditions: returns a valid user choice. will return 0 in the case
+    //to go back to main menu
     public int reportMenu(){
-        int choice = 0;
-        boolean valid = false;
+        int choice = -1;
 
         //number of choices from menu
         final int NUMBER_CHOICES = 3;
 
         Scanner scan = new Scanner(System.in);
+        Validation validate = new Validation();
 
         //prints header
         this.printHeader("Report Menu");
@@ -218,20 +200,9 @@ public class Interface {
             System.out.println("2. Generate food report");
             System.out.println("3. Exit to main menu");
 
-            //checks if it's int
-            if (scan.hasNextInt()) {
-                choice = scan.nextInt();
-                //checks if is a valid input
-                if(choice>=1 && choice<=NUMBER_CHOICES ) valid = true;
-                else{
-                    System.out.println("ERROR: Invalid input.");
-                    scan.nextLine();
-                }
-            }else{
-                System.out.println("ERROR: Invalid input.");
-                scan.nextLine();
-            }
-        }while(!valid);
+            choice = validate.getValidChoice(NUMBER_CHOICES);
+
+        }while(choice < 0);
 
         //returns 0 in case of 'exit to main menu'
         if(choice != NUMBER_CHOICES) return choice;
