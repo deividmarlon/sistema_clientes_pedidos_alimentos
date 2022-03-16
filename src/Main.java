@@ -19,8 +19,8 @@ public class Main {
                     choiceSubMenu = screen.clientMenu();
                     if (choiceSubMenu != 0) {
                         //TODO create client class
-                        //Client client = new Client();
-                        //client.configClient(choiceSubMenu);
+                        Client client = new Client();
+                        client.configClient(choiceSubMenu);
                     }
                     break;
                 case 2:
