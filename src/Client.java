@@ -28,7 +28,7 @@ public class Client {
 
         try{
             FileWriter database = new FileWriter("databaseClient.txt", true);
-            database.write(this.id + "," + this.name + "," + birthDate + "\n");
+            database.write(this.id + "," + this.name + "," + birthDate );
             database.close();
         }catch(IOException e){
             System.out.println("ERROR: Could not write in database.txt");
