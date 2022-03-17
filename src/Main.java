@@ -16,28 +16,34 @@ public class Main {
 
             switch (choiceMainMenu) {
                 case 1:
-                    choiceSubMenu = screen.clientMenu();
-                    if (choiceSubMenu != 0) {
-                        //TODO create client class
-                        Client client = new Client();
-                        client.configClient(choiceSubMenu);
-                    }
+                    do {
+                        choiceSubMenu = screen.clientMenu();
+                        if (choiceSubMenu != 0) {
+                            Client client = new Client();
+                            client.configClient(choiceSubMenu);
+                            //TODO report.printClient()
+                        }
+                    }while(choiceSubMenu != 0);
                     break;
                 case 2:
-                    choiceSubMenu = screen.foodMenu();
-                    if (choiceSubMenu != 0) {
-                        //TODO create food class
-                        //Food food = new Food();
-                        //food.configFood(choiceSubMenu);
-                    }
+                    do {
+                        choiceSubMenu = screen.foodMenu();
+                        if (choiceSubMenu != 0) {
+                            //TODO create food class
+                            //Food food = new Food();
+                            //food.configFood(choiceSubMenu);
+                        }
+                    }while(choiceSubMenu != 0);
                     break;
                 case 3:
-                    choiceSubMenu = screen.reportMenu();
-                    if(choiceSubMenu != 0){
-                        //TODO create report class
-                        //Report report = new Report
-                        //report.configReport(choiceSubMenu);
-                    }
+                    do {
+                        choiceSubMenu = screen.reportMenu();
+                        if (choiceSubMenu != 0) {
+                            //TODO create report class
+                            //Report report = new Report
+                            //report.configReport(choiceSubMenu);
+                        }
+                    }while(choiceSubMenu != 0);
                     break;
             }
         }while(choiceMainMenu != 0);

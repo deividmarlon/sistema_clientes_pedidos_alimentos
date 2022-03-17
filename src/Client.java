@@ -17,9 +17,9 @@ public class Client {
 
         //checks if file exists, if it doesn't, create file
         if(!file.exists()){
-            System.out.println("Database not found. Creating new databaseClient.txt");
+            System.out.println("Database not found. Creating new databaseClient.txt...");
             try{
-                file.createNewFile();
+                if(file.createNewFile()) System.out.println("databaseClient.txt created!");
             }catch(IOException e){
                 System.out.println("ERROR: Database could not be created.");
                 e.printStackTrace();
@@ -28,7 +28,7 @@ public class Client {
 
         try{
             FileWriter database = new FileWriter("databaseClient.txt", true);
-            database.write(this.id + "," + this.name + "," + birthDate );
+            database.write(this.id + "," + this.name + "," + birthDate + "\n" );
             database.close();
         }catch(IOException e){
             System.out.println("ERROR: Could not write in database.txt");
@@ -43,15 +43,15 @@ public class Client {
         String name;
         String[] date;
         int id, day, month, year;
+        boolean validID;
 
         Validation validate = new Validation();
         Scanner scan = new Scanner(System.in);
 
         do {
             System.out.println("ID: (optional - input a 0)");
-            id = validate.getValidId();
-            //TODO validate.checkClientID(id)
-        }while(id < 0);
+            id = validate.getValidId("databaseClient.txt");
+        }while(id < 0 );
 
         System.out.println("Name:");
         name = scan.nextLine();
@@ -88,6 +88,7 @@ public class Client {
             case 1: createClient();
                     insertDatabase();
                     break;
+            default: break;
         }
     }
 

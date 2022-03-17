@@ -1,4 +1,6 @@
+import java.io.FileNotFoundException;
 import java.util.Scanner;
+import java.io.File;
 
 public class Validation {
 
@@ -7,15 +9,14 @@ public class Validation {
     //post-conditions: returns true if number is even and
     //returns false if number is odd
     public boolean isEven(int n) {
-        if (n % 2 == 0) return true;
-        return false;
+        return n % 2 == 0;
     }
 
     //will try to get a valid choice from user and return -1 in case of invalid choice
     //pre-conditions: none
     //post-conditions: returns user choice or -1 in case of invalid choice
     public int getValidChoice(int numberChoices){
-        int choice = -1;
+        int choice;
         Scanner scan = new Scanner(System.in);
 
         if (scan.hasNextInt()) {
@@ -40,34 +41,65 @@ public class Validation {
     //will try to get a valid id from user and return -1 in case of invalid id
     //pre-conditions: none
     //post-conditions: returns valid id or -1 in case of invalid id
-    public int getValidId(){
-        int id = -1;
+    public int getValidId(String filename){
+        int id;
 
         Scanner scan = new Scanner(System.in);
 
+        //checks if id is an int
         if(scan.hasNextInt()) {
             id = scan.nextInt();
+            //checks if id is less than 0
             if(id < 0){
-                System.out.println("ERROR: Invalid input.");
+                System.out.println("ERROR: Invalid input. ID needs to be a positive integer.");
                 scan.nextLine();
                 id = -1;
             }
-            //TODO validate duplicate id
         }else{
-            System.out.println("ERROR: Invalid input.");
+            System.out.println("ERROR: Invalid input. ID needs to be a positive integer.");
             System.out.println();
             scan.nextLine();
             id = -1;
         }
+
+    //calls checkDuplicatedID to check if id already exists in database
+    File file = new File(filename);
+    if(file.exists() && id != -1){
+        try{
+            Scanner fileScan = new Scanner(file);
+            if(this.checkDuplicatedID(id, fileScan)) {
+                id = -1;
+                System.out.println("ERROR: ID already exists.");
+                System.out.println();
+            }
+        }catch (FileNotFoundException e){
+            id = -1;
+            e.printStackTrace();
+        }
+    }
         return id;
+    }
+
+    //will run the database "file" and return true if the id already exists. will
+    //return false otherwise
+    //pre-conditions: none
+    //post-conditions: returns true if id exists and false if it doesn't
+    private boolean checkDuplicatedID(int id, Scanner file){
+        int idFile;
+        file.useDelimiter(",");
+        while(file.hasNextLine()){
+            idFile = file.nextInt();
+            if(idFile == id) return true;
+            file.nextLine();
+        }
+        return false;
     }
 
     //checks for leap years
     //pre-conditions: none
     //post-conditions: returns true if its a leap year and false otherwise
     public boolean isLeapYear(int year){
-        if(year >= 1582 && (year % 4 == 0)) return true;
-        return false;
+        return year >= 1582 && (year % 4 == 0);
     }
 
     //validates a string array that contains a date in the format (dd-mm-yyyy)
@@ -94,4 +126,5 @@ public class Validation {
             return true;
         return false;
     }
+
 }
