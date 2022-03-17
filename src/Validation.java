@@ -97,14 +97,14 @@ public class Validation {
 
     //checks for leap years
     //pre-conditions: none
-    //post-conditions: returns true if its a leap year and false otherwise
+    //post-conditions: returns true if it's a leap year and false otherwise
     public boolean isLeapYear(int year){
         return year >= 1582 && (year % 4 == 0);
     }
 
     //validates a string array that contains a date in the format (dd-mm-yyyy)
     //pre-conditions: none
-    //post-conditions: returns true if the array string its a valid date and
+    //post-conditions: returns true if the array string it's a valid date and
     //false if it isn't
     public boolean validateDate(String[] date){
         int day, month, year;
