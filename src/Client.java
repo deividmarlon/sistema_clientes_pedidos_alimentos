@@ -26,6 +26,7 @@ public class Client {
             }
         }
 
+        //writes in database
         try{
             FileWriter database = new FileWriter("databaseClient.txt", true);
             database.write(this.id + "," + this.name + "," + birthDate + "\n" );
@@ -43,7 +44,6 @@ public class Client {
         String name;
         String[] date;
         int id, day, month, year;
-        boolean validID;
 
         Validation validate = new Validation();
         Scanner scan = new Scanner(System.in);

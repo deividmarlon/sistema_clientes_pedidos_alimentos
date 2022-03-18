@@ -49,34 +49,35 @@ public class Validation {
         //checks if id is an int
         if(scan.hasNextInt()) {
             id = scan.nextInt();
-            //checks if id is less than 0
-            if(id < 0){
-                System.out.println("ERROR: Invalid input. ID needs to be a positive integer.");
-                scan.nextLine();
-                id = -1;
-            }
         }else{
             System.out.println("ERROR: Invalid input. ID needs to be a positive integer.");
             System.out.println();
             scan.nextLine();
-            id = -1;
+            return -1;
         }
 
-    //calls checkDuplicatedID to check if id already exists in database
-    File file = new File(filename);
-    if(file.exists() && id != -1){
-        try{
-            Scanner fileScan = new Scanner(file);
-            if(this.checkDuplicatedID(id, fileScan)) {
-                id = -1;
-                System.out.println("ERROR: ID already exists.");
-                System.out.println();
-            }
-        }catch (FileNotFoundException e){
-            id = -1;
-            e.printStackTrace();
+        //checks if id is less than 0
+        if(id < 0){
+            System.out.println("ERROR: Invalid input. ID needs to be a positive integer.");
+            scan.nextLine();
+            return -1;
         }
-    }
+
+        //calls checkDuplicatedID to check if id already exists in database
+        File file = new File(filename);
+        if(file.exists() && id != -1){
+            try{
+                Scanner fileScan = new Scanner(file);
+                if(this.checkDuplicatedID(id, fileScan)) {
+                    System.out.println("ERROR: ID already exists.");
+                    System.out.println();
+                    return -1;
+                }
+            }catch (FileNotFoundException e){
+                id = -1;
+                e.printStackTrace();
+            }
+        }
         return id;
     }
 
@@ -99,7 +100,7 @@ public class Validation {
     //pre-conditions: none
     //post-conditions: returns true if it's a leap year and false otherwise
     public boolean isLeapYear(int year){
-        return year >= 1582 && (year % 4 == 0);
+        return ((year >= 1582) && (year % 4 == 0));
     }
 
     //validates a string array that contains a date in the format (dd-mm-yyyy)
@@ -118,10 +119,14 @@ public class Validation {
             return false;
         }
 
+        //if it's a leap year adds a day to february
         if(isLeapYear(year)) daysInMonth[1]++;
 
+        //checks if month is between 1 and 12
         if(month < 0 || month > 12) return false;
 
+        //checks if day is bigger than 0 and smaller than the
+        //number of days in month
         if( (day > 0) && (day <= daysInMonth[month-1]))
             return true;
         return false;

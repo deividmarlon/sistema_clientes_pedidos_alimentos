@@ -1,9 +1,16 @@
+//****************************************************************************************************
+//**********                         Food orders management system                          **********
+//**********                                                                                **********
+//**********                                                                                **********
+//**********                   Authors: Daniel Zonta Ojeda, Deivid Marlon                   **********
+//****************************************************************************************************
+
 public class Main {
     public static void main(String[] args) {
 
         int choiceMainMenu, choiceSubMenu;
 
-        Interface screen = new Interface();
+        Screen screen = new Screen();
 
         //prints main menu on screen and gets user choice
         //repeats until user chooses to exit program
@@ -11,12 +18,14 @@ public class Main {
             //prints header on screen
             screen.startScreen();
 
-            //prints main menu
+            //prints main menu and gets user input
             choiceMainMenu = screen.mainMenu();
 
             switch (choiceMainMenu) {
                 case 1:
                     do {
+                        //prints client menu and gets user choice
+                        //repeats until user chooses to exit to main menu
                         choiceSubMenu = screen.clientMenu();
                         if (choiceSubMenu != 0) {
                             Client client = new Client();

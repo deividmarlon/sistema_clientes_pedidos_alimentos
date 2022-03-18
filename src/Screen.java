@@ -1,11 +1,20 @@
 import java.util.Scanner;
 
-public class Interface {
+public class Screen {
 
-    //constant with the software name to calculate size of some menus.
+    //CONSTANTS
+
+    //software name to calculate size of some menus.
     private static final String SOFTWARE_NAME = "Food orders management system";
+    //number of choices from each menu
+    private final int NUMBER_CHOICES_MAIN_MENU = 4;
+    private final int NUMBER_CHOICES_CLIENT_MENU = 7;
+    private final int NUMBER_CHOICES_FOOD_MENU = 6;
+    private final int NUMBER_CHOICES_REPORT_MENU = 3;
+
 
     //prints a centralized header with the software name and a message
+    // in the style: 'SOFTWARE_NAME' - 'header'
     //pre-conditions: none
     //post-conditions: header printed
     private void printHeader(String header){
@@ -66,16 +75,11 @@ public class Interface {
     //post-conditions: main menu printed on screen until a valid user choice
     //then returns user choice
     public int mainMenu(){
-
-        //number of choices from menu
-        final int NUMBER_CHOICES = 4;
-
         int choice = 0;
-        boolean valid = false;
 
-        Scanner scan = new Scanner(System.in);
+        Validation validate = new Validation();
 
-        //prints header
+        //prints SOFTWARE_NAME - Main Menu
         this.printHeader("Main Menu");
 
     do{
@@ -85,23 +89,12 @@ public class Interface {
         System.out.println("3. Report Menu.");
         System.out.println("4. Exit program.");
 
-        //checks if it's int
-        if (scan.hasNextInt()) {
-            choice = scan.nextInt();
-            //checks if is a valid input
-            if(choice>=1 && choice<=NUMBER_CHOICES )valid = true;
-            else{
-                System.out.println("ERROR: Invalid input.");
-                scan.nextLine();
-            }
-        }else{
-            System.out.println("ERROR: Invalid input.");
-            scan.nextLine();
-        }
-    }while(!valid);
+        choice = validate.getValidChoice(NUMBER_CHOICES_MAIN_MENU);
+
+    }while(choice < 0);
 
         //returns 0 in case of 'exit program'
-        if(choice != NUMBER_CHOICES) return choice;
+        if(choice != NUMBER_CHOICES_MAIN_MENU) return choice;
         else return 0;
     }
 
@@ -112,13 +105,10 @@ public class Interface {
     public int clientMenu() {
         int choice = -1;
 
-        //number of choices from menu
-        final int NUMBER_CHOICES = 7;
-
         Scanner scan = new Scanner(System.in);
         Validation validate = new Validation();
 
-        //prints header
+        //prints SOFTWARE_NAME - Client Menu
         this.printHeader("Client Menu");
 
         //will repeat until valid input
@@ -132,12 +122,12 @@ public class Interface {
             System.out.println("6. View full history.");
             System.out.println("7. Exit to main menu");
 
-            choice = validate.getValidChoice(NUMBER_CHOICES);
+            choice = validate.getValidChoice(NUMBER_CHOICES_CLIENT_MENU);
 
         }while(choice < 0);
 
         //returns 0 in case of 'exit to main menu'
-        if(choice != NUMBER_CHOICES) return choice;
+        if(choice != NUMBER_CHOICES_CLIENT_MENU) return choice;
         else return 0;
     }
 
@@ -148,13 +138,10 @@ public class Interface {
     public int foodMenu(){
         int choice = -1;
 
-        //number of choices from menu
-        final int NUMBER_CHOICES = 6;
-
         Scanner scan = new Scanner(System.in);
         Validation validate = new Validation();
 
-        //prints header
+        //prints SOFTWARE_NAME - Food Menu
         this.printHeader("Food Menu");
 
         //will repeat until valid input
@@ -167,12 +154,12 @@ public class Interface {
             System.out.println("5. List food");
             System.out.println("6. Exit to main menu");
 
-            choice = validate.getValidChoice(NUMBER_CHOICES);
+            choice = validate.getValidChoice(NUMBER_CHOICES_FOOD_MENU);
 
         }while(choice < 0);
 
         //returns 0 in case of 'exit to main menu'
-        if(choice != NUMBER_CHOICES) return choice;
+        if(choice != NUMBER_CHOICES_FOOD_MENU) return choice;
         else return 0;
 
     }
@@ -184,13 +171,10 @@ public class Interface {
     public int reportMenu(){
         int choice = -1;
 
-        //number of choices from menu
-        final int NUMBER_CHOICES = 3;
-
         Scanner scan = new Scanner(System.in);
         Validation validate = new Validation();
 
-        //prints header
+        //prints SOFTWARE_NAME - Report Menu
         this.printHeader("Report Menu");
 
         //will repeat until valid input
@@ -200,12 +184,12 @@ public class Interface {
             System.out.println("2. Generate food report");
             System.out.println("3. Exit to main menu");
 
-            choice = validate.getValidChoice(NUMBER_CHOICES);
+            choice = validate.getValidChoice(NUMBER_CHOICES_REPORT_MENU);
 
         }while(choice < 0);
 
         //returns 0 in case of 'exit to main menu'
-        if(choice != NUMBER_CHOICES) return choice;
+        if(choice != NUMBER_CHOICES_REPORT_MENU) return choice;
         else return 0;
     }
 
