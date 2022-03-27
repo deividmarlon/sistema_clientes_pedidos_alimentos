@@ -85,7 +85,7 @@ public class Validation {
     //return false otherwise
     //pre-conditions: none
     //post-conditions: returns true if id exists and false if it doesn't
-    private boolean checkDuplicatedID(int id, Scanner file){
+    public boolean checkDuplicatedID(int id, Scanner file){
         int idFile;
         file.useDelimiter(",");
         while(file.hasNextLine()){

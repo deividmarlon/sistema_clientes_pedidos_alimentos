@@ -9,24 +9,43 @@ public class Client {
     private String name;
     private LocalDate birthDate;
 
-    public int getId() {
-        return id;
+
+    //asks user for client id and tries to find it in database
+    //pre-conditions: none
+    //post-conditions: creates a class instance if client id exists
+    private void findClient(){
+
+        boolean valid = false;
+
+        Database database = new Database("databaseClient.txt");
+        Scanner scan = new Scanner(System.in);
+        Screen screen = new Screen();
+
+        do {
+            System.out.println("Insert client id");
+            if (scan.hasNextInt()) {
+                id = scan.nextInt();
+                Client client = database.findClient(id);
+                if (client != null){
+                    this.id = client.id;
+                    this.name = client.name;
+                    this.birthDate = client.birthDate;
+                }
+                else System.out.println("Client doesn't exist.");
+                valid = true;
+            } else {
+                System.out.println("Invalid id.");
+                System.out.println();
+                scan.nextLine();
+            }
+        }while(valid == false);
+
     }
-
-    public String getName() {
-        return name;
-    }
-
-    public LocalDate getBirthDate() {
-        return birthDate;
-    }
-
-
 
     //Asks user for the client information and saves it to this instance
     //pre-conditions: none
     //post-conditions: information saved
-    public void createClient(){
+    private void createClient(){
         String name;
         String[] date;
         int id, day, month, year;
@@ -70,10 +89,14 @@ public class Client {
     //pre-conditions: none
     //post-conditions:
     public void configClient(int userChoice){
-        Database database = new Database();
+        Database database = new Database("clientDatabase.txt");
+        Screen screen = new Screen();
         switch(userChoice){
-            case 1:database.insertClient();
+            case 1: createClient();
+                    database.insertClient(id, name, birthDate);
                     break;
+            case 4: findClient();
+//                    screen.showClient(id);
             default: break;
         }
     }
