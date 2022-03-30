@@ -29,6 +29,36 @@ public class Database {
 
     }
 
+    public FoodInteractions findFood(int id){
+
+        FoodInteractions foodInteractions = new FoodInteractions();
+        Validation validate = new Validation();
+        if(!file.exists()) return null;
+
+        try{
+            //TODO find
+            Scanner fileText = new Scanner(file);
+            fileText.useDelimiter(",");
+            int readId;
+            while(fileText.hasNextLine()){
+                readId = fileText.nextInt();
+                if(readId == id){
+                    System.out.println(readId);
+                    fileText.close();
+                }
+                fileText.nextLine();
+            }
+            fileText.close();
+
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+            return null;
+        }
+
+        return foodInteractions;
+
+    }
+
     //Inserts client values into database
     //pre-conditions: valid values in class variables
     //post-conditions: information inserted into database

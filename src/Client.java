@@ -9,7 +9,6 @@ public class Client {
     private String name;
     private LocalDate birthDate;
 
-
     //asks user for client id and tries to find it in database
     //pre-conditions: none
     //post-conditions: creates a class instance if client id exists
@@ -89,7 +88,7 @@ public class Client {
     //pre-conditions: none
     //post-conditions:
     public void configClient(int userChoice){
-        Database database = new Database("clientDatabase.txt");
+        Database database = new Database("databaseClient.txt");
         Screen screen = new Screen();
         switch(userChoice){
             case 1: createClient();
