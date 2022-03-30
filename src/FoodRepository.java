@@ -9,7 +9,20 @@ public class FoodRepository {
 
     private File file;
 
-    FoodRepository(){file = new File("databaseFood.txt");}
+    FoodRepository(){
+        file = new File("databaseFood.txt");
+
+        //Checks if file exists, if it doesn't, create file
+        if(!file.exists()){
+            System.out.println("Database not found. Creating new " + file.getName() + "...");
+            try{
+                if(file.createNewFile()) System.out.println(file.getName() + " created!");
+            }catch(IOException e){
+                System.out.println("ERROR: Database could not be created.");
+                e.printStackTrace();
+            }
+        }
+    }
 
     public ArrayList<FoodEntity> index(){
 
@@ -39,16 +52,11 @@ public class FoodRepository {
         return foods;
     }
 
-    public void save(FoodEntity food){
-        //Checks if file exists, if it doesn't, create file
+    public boolean save(FoodEntity food){
+
         if(!file.exists()){
-            System.out.println("Database not found. Creating new " + file.getName() + "...");
-            try{
-                if(file.createNewFile()) System.out.println(file.getName() + " created!");
-            }catch(IOException e){
-                System.out.println("ERROR: Database could not be created.");
-                e.printStackTrace();
-            }
+            System.out.println("ERROR: Could not write in database.txt");
+            return false;
         }
 
         //Prepares data string to write in database
@@ -59,9 +67,11 @@ public class FoodRepository {
             FileWriter database = new FileWriter(file.getName(), true);
             database.write(data + "\n" );
             database.close();
+            return true;
         }catch(IOException e){
             System.out.println("ERROR: Could not write in database.txt");
             e.printStackTrace();
+            return false;
         }
     }
 
