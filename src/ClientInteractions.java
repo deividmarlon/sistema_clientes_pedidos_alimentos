@@ -3,6 +3,10 @@ import java.util.Scanner;
 
 public class ClientInteractions {
 
+    //asks user for client id, if it finds this client will
+    //ask user which field to edit
+    //pre-condigions: none
+    //post-conditions: desired field edited or a error message
     private void editClient(){
 
         boolean valid = false;
@@ -62,6 +66,9 @@ public class ClientInteractions {
 
     }
 
+    //asks user for client id and tries to delete it from database
+    //pre-conditions: none
+    //post-conditions: client deleted from database or error message
     private void deleteClient(){
 
         boolean valid = false;
@@ -157,12 +164,6 @@ public class ClientInteractions {
         month = Integer.parseInt(date[1]);
         year = Integer.parseInt(date[2]);
         LocalDate birthDate = LocalDate.of(year, month, day);
-
-//        ClientEntity client = new ClientEntity();
-
-//        client.id = id;
-//        client.name = name;
-//        client.birthDate = birthDate;
 
         clientRepository.insertClient(id, name, birthDate);
         //TODO viajens??

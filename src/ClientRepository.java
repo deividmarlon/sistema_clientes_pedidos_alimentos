@@ -10,6 +10,10 @@ public class ClientRepository {
        file = new File("databaseClient.txt");
     }
 
+    //will try to delete client with same id as parameter. returns true if succeeded
+    //and false if it fails
+    //pre-conditions: none
+    //post-conditions: returns a boolean and tries to delete client from database
     public boolean deleteClient(int id){
         if(findClient(id) == null) return false;
 
@@ -66,6 +70,11 @@ public class ClientRepository {
         return true;
     }
 
+    //will try to find a client with same id as parameter and return
+    //a ClientEntity object with its information. returns null if it doesn't find
+    //the id
+    //pre-conditions: none
+    //post-conditions: returns ClientEntity or null
     public ClientEntity findClient(int id){
         int idFile;
         LocalDate dateFile;
@@ -105,36 +114,6 @@ public class ClientRepository {
 
     }
 
-    public FoodInteractions findFood(int id){
-
-        FoodInteractions foodInteractions = new FoodInteractions();
-        Validation validate = new Validation();
-        if(!file.exists()) return null;
-
-        try{
-            //TODO find
-            Scanner fileText = new Scanner(file);
-            fileText.useDelimiter(",");
-            int readId;
-            while(fileText.hasNextLine()){
-                readId = fileText.nextInt();
-                if(readId == id){
-                    System.out.println(readId);
-                    fileText.close();
-                }
-                fileText.nextLine();
-            }
-            fileText.close();
-
-        }catch (FileNotFoundException e){
-            e.printStackTrace();
-            return null;
-        }
-
-        return foodInteractions;
-
-    }
-
     //Inserts client values into database
     //pre-conditions: valid values in class variables
     //post-conditions: information inserted into database
@@ -162,6 +141,10 @@ public class ClientRepository {
         }
     }
 
+    //will create a temp database file, and replace the line with client.id
+    //with the client information passed as parameter
+    //pre-conditions: none
+    //post-conditions: client edited
     public boolean update(ClientEntity client){
         if(!file.exists()) return false;
 
