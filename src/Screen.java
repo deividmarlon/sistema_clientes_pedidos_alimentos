@@ -1,3 +1,4 @@
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class Screen {
@@ -13,6 +14,30 @@ public class Screen {
     private final int NUMBER_CHOICES_EDIT_FOOD_MENU = 2;
     private final int NUMBER_CHOICES_REPORT_MENU = 3;
 
+    public void printClient(Client client){
+        System.out.print(client.getId());
+        System.out.print(" ");
+        System.out.print(client.getName());
+        System.out.print(" ");
+
+        //format date to brazilian standard
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        System.out.print(client.getBirthDate().format(formatter));
+    }
+
+    //wait user to press enter to continue execution
+    //pre-condition: none
+    //post-condition: user needs to press enter for program to continue
+    public void waitInput(){
+        System.out.println();
+        System.out.println("Press enter to continue");
+
+        try{
+            System.in.read();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
 
     //prints a centralized header with the software name and a message
     // in the style: 'SOFTWARE_NAME' - 'header'
@@ -189,7 +214,7 @@ public class Screen {
 
     }
 
-    //prints report menu, reads an int and returns it if it's valid
+    //prints report menu, reads an int and returns it if it's a valid input
     //pre-conditions: none
     //post-conditions: returns a valid user choice. will return 0 in the case
     //to go back to main menu

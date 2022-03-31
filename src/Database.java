@@ -11,21 +11,42 @@ public class Database {
     }
 
     public Client findClient(int id){
+        int idFile;
+        LocalDate dateFile;
+        String[] line;
 
         Client client = new Client();
         Validation validate = new Validation();
+
         if(!file.exists()) return null;
 
         try{
             Scanner scan = new Scanner(file);
-            //TODO find
-            System.out.println(validate.checkDuplicatedID(id, scan));
+            scan.useDelimiter(",");
+            while(scan.hasNextLine()){
+                line = scan.nextLine().split(",");
+                idFile = Integer.parseInt(line[0]);
+                if(idFile == id) {
+                    client.setId(idFile);
+                    client.setName(line[1]);
+
+                    String[] date = line[2].split("-");
+                    int day = Integer.parseInt(date[2]);
+                    int month = Integer.parseInt(date[1]);
+                    int year = Integer.parseInt(date[0]);
+                    dateFile = LocalDate.of(year, month, day);
+
+                    client.setBirthDate(dateFile);
+                    scan.nextLine();
+                    return client;
+                }
+            }
+            return null;
+
         }catch (FileNotFoundException e){
             e.printStackTrace();
             return null;
         }
-
-        return client;
 
     }
 

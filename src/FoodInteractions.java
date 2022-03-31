@@ -56,7 +56,7 @@ public class FoodInteractions {
                         case 1: {
                             System.out.println("Insert a new name:");
                             food.name = scan.nextLine();
-                            foodRepository.update(food);
+                            foodRepository.update(food); //TODO here
                             break;
                         }
                         default: break;
@@ -148,6 +148,8 @@ public class FoodInteractions {
         FoodRepository foodRepository = new FoodRepository();
 
         ArrayList<FoodEntity> foods = foodRepository.index();
+
+        //TODO send list to screen
 
         if(foods.isEmpty()){
             System.out.println("Any food was found in database");

@@ -1,6 +1,3 @@
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Scanner;
 
@@ -9,10 +6,34 @@ public class Client {
     private String name;
     private LocalDate birthDate;
 
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public LocalDate getBirthDate() {
+        return birthDate;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
+    }
+
     //asks user for client id and tries to find it in database
     //pre-conditions: none
     //post-conditions: creates a class instance if client id exists
-    private void findClient(){
+    private void showClient(){
 
         boolean valid = false;
 
@@ -26,9 +47,7 @@ public class Client {
                 id = scan.nextInt();
                 Client client = database.findClient(id);
                 if (client != null){
-                    this.id = client.id;
-                    this.name = client.name;
-                    this.birthDate = client.birthDate;
+                    screen.printClient(client);
                 }
                 else System.out.println("Client doesn't exist.");
                 valid = true;
@@ -39,6 +58,7 @@ public class Client {
             }
         }while(valid == false);
 
+        screen.waitInput();
     }
 
     //Asks user for the client information and saves it to this instance
@@ -94,7 +114,7 @@ public class Client {
             case 1: createClient();
                     database.insertClient(id, name, birthDate);
                     break;
-            case 4: findClient();
+            case 4: showClient();
 //                    screen.showClient(id);
             default: break;
         }
