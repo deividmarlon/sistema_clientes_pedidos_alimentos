@@ -26,6 +26,7 @@ public class FoodInteractions {
 
         foodRepository.save(newFood);
 
+
     }
 
     //Asks user for food id and tries to update it database
@@ -106,6 +107,7 @@ public class FoodInteractions {
                 scan.nextLine();
             }
         }while(valid == false);
+
     }
 
     //Asks user for food id and tries to delete it from database

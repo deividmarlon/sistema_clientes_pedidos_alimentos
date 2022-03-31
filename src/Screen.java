@@ -13,6 +13,34 @@ public class Screen {
     private final int NUMBER_CHOICES_FOOD_MENU = 6;
     private final int NUMBER_CHOICES_EDIT_FOOD_MENU = 2;
     private final int NUMBER_CHOICES_REPORT_MENU = 3;
+    private final int NUMBER_CHOICES_EDIT_CLIENT_MENU = 3;
+
+    public int editClientMenu(){
+        int choice = -1;
+
+        Scanner scan = new Scanner(System.in);
+        Validation validate = new Validation();
+
+        //prints SOFTWARE_NAME - Food Menu
+        this.printHeader("Client Menu");
+
+        //will repeat until valid input
+        do {
+            System.out.println();
+            System.out.println("1. Name.");
+            System.out.println("2. Birth Date.");
+            System.out.println("3. Exit to main menu.");
+
+            choice = validate.getValidChoice(NUMBER_CHOICES_EDIT_CLIENT_MENU);
+
+        }while(choice < 0);
+
+        //returns 0 in case of 'exit to main menu'
+        if(choice != NUMBER_CHOICES_FOOD_MENU) return choice;
+        else return 0;
+
+    }
+
 
     public void printClient(Client client){
         System.out.print(client.getId());
@@ -131,7 +159,6 @@ public class Screen {
     public int clientMenu() {
         int choice = -1;
 
-        Scanner scan = new Scanner(System.in);
         Validation validate = new Validation();
 
         //prints SOFTWARE_NAME - Client Menu

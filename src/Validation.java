@@ -35,7 +35,7 @@ public class Validation {
             choice = -1;
         }
 
-       return choice;
+        return choice;
     }
 
     //will try to get a valid id from user and return -1 in case of invalid id
@@ -71,8 +71,10 @@ public class Validation {
                 if(this.checkDuplicatedID(id, fileScan)) {
                     System.out.println("ERROR: ID already exists.");
                     System.out.println();
+                    fileScan.close();
                     return -1;
                 }
+                fileScan.close();
             }catch (FileNotFoundException e){
                 id = -1;
                 e.printStackTrace();

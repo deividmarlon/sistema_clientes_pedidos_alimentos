@@ -166,7 +166,7 @@ public class FoodRepository {
     }
 
     public boolean delete(int id){
-        if(!(findById(id) != null)) return false;
+        if(findById(id) == null) return false;
 
         if(!file.exists()) return false;
 

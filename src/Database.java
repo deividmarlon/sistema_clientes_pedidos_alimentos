@@ -6,8 +6,64 @@ public class Database {
 
     private File file;
 
-    Database(String fileName){
-       file = new File(fileName);
+    Database(){
+       file = new File("databaseClient.txt");
+    }
+
+    public boolean deleteClient(int id){
+        if(findClient(id) == null) return false;
+
+        if(!file.exists()) return false;
+
+        File tempFile = new File("databaseClient_temp.txt");
+
+
+        //Checks if tempFile exists, if it doesn't, create tempFile
+        if(!tempFile.exists()){
+            try{
+                tempFile.createNewFile();
+            }catch(IOException e){
+                System.out.println("ERROR: Database could not be edited.");
+                e.printStackTrace();
+                return false;
+            }
+        }
+
+        //TODO maybe different method
+
+        //Writes tempFile with original file content but
+        //without line that contains the id of parameter
+        try{
+            FileWriter fw = new FileWriter(tempFile.getName(), true);
+
+            Scanner fileText = new Scanner(file);
+
+            int idFile;
+            String line;
+            String [] splittedLine;
+
+            while(fileText.hasNextLine()){
+                line = fileText.nextLine();
+                splittedLine = line.split(",");
+                idFile = Integer.parseInt(splittedLine[0]);
+                if(idFile != id){
+                    fw.write(line+"\n");
+                }
+            }
+            fileText.close();
+            fw.close();
+        }catch(IOException e){
+            System.out.println("ERROR: Could not write in database.txt");
+            e.printStackTrace();
+            return false;
+        }
+
+        //Replace original file by temp file
+        file.delete();
+        file = new File("databaseClient.txt");
+        tempFile.renameTo(file);
+
+        return true;
     }
 
     public Client findClient(int id){
@@ -16,7 +72,6 @@ public class Database {
         String[] line;
 
         Client client = new Client();
-        Validation validate = new Validation();
 
         if(!file.exists()) return null;
 
@@ -37,7 +92,7 @@ public class Database {
                     dateFile = LocalDate.of(year, month, day);
 
                     client.setBirthDate(dateFile);
-                    scan.nextLine();
+                    scan.close();
                     return client;
                 }
             }
@@ -105,6 +160,63 @@ public class Database {
             System.out.println("ERROR: Could not write in database.txt");
             e.printStackTrace();
         }
+    }
+
+    public boolean update(Client client){
+        if(!file.exists()) return false;
+
+        File tempFile = new File("databaseClient_temp.txt");
+
+        //Checks if tempFile exists, if it doesn't, create tempFile
+        if(!tempFile.exists()){
+            try{
+                tempFile.createNewFile();
+            }catch(IOException e){
+                System.out.println("ERROR: Database could not be edited.");
+                e.printStackTrace();
+                return false;
+            }
+        }
+
+        //Prepares data string to write in database
+        String data = client.getId() +","+ client.getName() + "," + client.getBirthDate();
+
+        //Writes tempFile with original file content but
+        //replacing the corresponding food parameter line
+        try{
+            FileWriter fw = new FileWriter(tempFile.getName(), true);
+
+            Scanner fileText = new Scanner(file);
+
+            int idFile;
+            String line;
+            String [] splittedLine;
+
+            while(fileText.hasNextLine()){
+                line=fileText.nextLine();
+                splittedLine = line.split(",");
+                idFile = Integer.parseInt(splittedLine[0]);
+                if(idFile == client.getId()){
+                    fw.write(data+"\n");
+                }else{
+                    fw.write(line+"\n");
+                }
+            }
+            fileText.close();
+            fw.close();
+        }catch(IOException e){
+            System.out.println("ERROR: Could not write in database.txt");
+            e.printStackTrace();
+            return false;
+        }
+
+        //Replace original file by temp file
+
+        file.delete();
+        file = new File("databaseClient.txt");
+        tempFile.renameTo(file);
+
+        return true;
     }
 
 }

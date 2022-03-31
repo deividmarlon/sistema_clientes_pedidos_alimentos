@@ -38,7 +38,6 @@ public class Main {
                     do {
                         choiceSubMenu = screen.foodMenu();
                         if (choiceSubMenu != 0) {
-                            System.out.println(choiceSubMenu);
                             //TODO create food class
                             FoodInteractions foodInteractions = new FoodInteractions();
                             foodInteractions.interact(choiceSubMenu);
