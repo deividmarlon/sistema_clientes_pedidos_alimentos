@@ -1,41 +1,14 @@
 import java.time.LocalDate;
 import java.util.Scanner;
 
-public class Client {
-    private int id;
-    private String name;
-    private LocalDate birthDate;
-
-    public int getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public LocalDate getBirthDate() {
-        return birthDate;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setBirthDate(LocalDate birthDate) {
-        this.birthDate = birthDate;
-    }
+public class ClientInteractions {
 
     private void editClient(){
 
         boolean valid = false;
         int id, choiceEdit;
 
-        Database database = new Database();
+        ClientRepository clientRepository = new ClientRepository();
         Screen screen = new Screen();
         Scanner scan = new Scanner(System.in);
         Validation validate = new Validation();
@@ -45,14 +18,14 @@ public class Client {
             if(scan.hasNextInt()){
                 id = scan.nextInt();
                 scan.nextLine();
-                Client client = database.findClient(id);
+                ClientEntity client = clientRepository.findClient(id);
                 if(client != null){
                     choiceEdit = screen.editClientMenu();
                     switch (choiceEdit){
                         case 1:{
                             System.out.println("Insert a new name:");
                             client.name = scan.nextLine();
-                            database.update(client);
+                            clientRepository.update(client);
                             break;
                         }
                         case 2:{
@@ -74,8 +47,8 @@ public class Client {
                             month = Integer.parseInt(date[1]);
                             year = Integer.parseInt(date[2]);
                             LocalDate birthDate = LocalDate.of(year, month, day);
-                            client.setBirthDate(birthDate);
-                            database.update(client);
+                            client.birthDate = birthDate;
+                            clientRepository.update(client);
                         }
                     }
                 }else System.out.println("Client doesn't exist.");
@@ -95,14 +68,14 @@ public class Client {
         int id;
 
         Scanner scan = new Scanner(System.in);
-        Database database = new Database();
+        ClientRepository clientRepository = new ClientRepository();
 
         //TODO list clients
         do{
             System.out.println("Insert client id");
             if(scan.hasNextInt()){
                 id = scan.nextInt();
-                if(database.deleteClient(id))
+                if(clientRepository.deleteClient(id))
                     System.out.println("Client deleted!");
                 else
                     System.out.println("Client doesn't exist.");
@@ -123,17 +96,18 @@ public class Client {
 
         boolean valid = false;
 
-        Database database = new Database();
+        ClientRepository clientRepository = new ClientRepository();
+        ClientEntity clientFound = new ClientEntity();
         Scanner scan = new Scanner(System.in);
         Screen screen = new Screen();
 
         do {
             System.out.println("Insert client id");
             if (scan.hasNextInt()) {
-                id = scan.nextInt();
-                Client client = database.findClient(id);
-                if (client != null){
-                    screen.printClient(client);
+                clientFound.id = scan.nextInt();
+                clientFound = clientRepository.findClient(clientFound.id);
+                if (clientFound != null){
+                    screen.printClient(clientFound);
                 }
                 else System.out.println("Client doesn't exist.");
                 valid = true;
@@ -157,7 +131,7 @@ public class Client {
 
         Validation validate = new Validation();
         Scanner scan = new Scanner(System.in);
-        Database database = new Database();
+        ClientRepository clientRepository = new ClientRepository();
 
         do {
             System.out.println("ID: (optional - input a 0)");
@@ -184,11 +158,13 @@ public class Client {
         year = Integer.parseInt(date[2]);
         LocalDate birthDate = LocalDate.of(year, month, day);
 
-        this.id = id;
-        this.name = name;
-        this.birthDate = birthDate;
+//        ClientEntity client = new ClientEntity();
 
-        database.insertClient(id, name, birthDate);
+//        client.id = id;
+//        client.name = name;
+//        client.birthDate = birthDate;
+
+        clientRepository.insertClient(id, name, birthDate);
         //TODO viajens??
 
     }

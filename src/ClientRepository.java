@@ -2,11 +2,11 @@ import java.io.*;
 import java.time.LocalDate;
 import java.util.Scanner;
 
-public class Database {
+public class ClientRepository {
 
     private File file;
 
-    Database(){
+    ClientRepository(){
        file = new File("databaseClient.txt");
     }
 
@@ -66,12 +66,12 @@ public class Database {
         return true;
     }
 
-    public Client findClient(int id){
+    public ClientEntity findClient(int id){
         int idFile;
         LocalDate dateFile;
         String[] line;
 
-        Client client = new Client();
+        ClientEntity client = new ClientEntity();
 
         if(!file.exists()) return null;
 
@@ -82,8 +82,8 @@ public class Database {
                 line = scan.nextLine().split(",");
                 idFile = Integer.parseInt(line[0]);
                 if(idFile == id) {
-                    client.setId(idFile);
-                    client.setName(line[1]);
+                    client.id = idFile;
+                    client.name = line[1];
 
                     String[] date = line[2].split("-");
                     int day = Integer.parseInt(date[2]);
@@ -91,7 +91,7 @@ public class Database {
                     int year = Integer.parseInt(date[0]);
                     dateFile = LocalDate.of(year, month, day);
 
-                    client.setBirthDate(dateFile);
+                    client.birthDate = dateFile;
                     scan.close();
                     return client;
                 }
@@ -162,7 +162,7 @@ public class Database {
         }
     }
 
-    public boolean update(Client client){
+    public boolean update(ClientEntity client){
         if(!file.exists()) return false;
 
         File tempFile = new File("databaseClient_temp.txt");
@@ -179,7 +179,7 @@ public class Database {
         }
 
         //Prepares data string to write in database
-        String data = client.getId() +","+ client.getName() + "," + client.getBirthDate();
+        String data = client.id +","+ client.name + "," + client.birthDate;
 
         //Writes tempFile with original file content but
         //replacing the corresponding food parameter line
@@ -196,7 +196,7 @@ public class Database {
                 line=fileText.nextLine();
                 splittedLine = line.split(",");
                 idFile = Integer.parseInt(splittedLine[0]);
-                if(idFile == client.getId()){
+                if(idFile == client.id){
                     fw.write(data+"\n");
                 }else{
                     fw.write(line+"\n");

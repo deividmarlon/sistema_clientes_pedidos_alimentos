@@ -42,15 +42,15 @@ public class Screen {
     }
 
 
-    public void printClient(Client client){
-        System.out.print(client.getId());
+    public void printClient(ClientEntity client){
+        System.out.print(client.id);
         System.out.print(" ");
-        System.out.print(client.getName());
+        System.out.print(client.name);
         System.out.print(" ");
 
         //format date to brazilian standard
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        System.out.print(client.getBirthDate().format(formatter));
+        System.out.print(client.birthDate.format(formatter));
     }
 
     //wait user to press enter to continue execution

@@ -28,8 +28,8 @@ public class Main {
                         //repeats until user chooses to exit to main menu
                         choiceSubMenu = screen.clientMenu();
                         if (choiceSubMenu != 0) {
-                            Client client = new Client();
-                            client.configClient(choiceSubMenu);
+                            ClientInteractions clientInteractions = new ClientInteractions();
+                            clientInteractions.configClient(choiceSubMenu);
                             //TODO report.printClient()
                         }
                     }while(choiceSubMenu != 0);
