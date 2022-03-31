@@ -148,6 +148,7 @@ public class FoodInteractions {
     private void listFoods(){
 
         FoodRepository foodRepository = new FoodRepository();
+        Screen screen = new Screen();
 
         ArrayList<FoodEntity> foods = foodRepository.index();
 
@@ -166,7 +167,7 @@ public class FoodInteractions {
                 System.out.println("");
             });
         }
-
+        screen.waitInput();
     }
 
     //manages the user choice from the client sub menu
@@ -175,12 +176,16 @@ public class FoodInteractions {
     public void interact(int userChoice){
         switch(userChoice){
             case 1: createFood();
+                    listFoods();
                 break;
             case 2: editFood();
+                    listFoods();
                 break;
             case 3: deleteFood();
+                    listFoods();
                 break;
             case 4: showFood();
+                    listFoods();
                 break;
             case 5: listFoods();
                 break;

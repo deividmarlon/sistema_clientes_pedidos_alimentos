@@ -1,5 +1,6 @@
 import java.io.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class ClientRepository {
@@ -9,6 +10,43 @@ public class ClientRepository {
     ClientRepository(){
        file = new File("databaseClient.txt");
     }
+
+    public ArrayList<ClientEntity> index(){
+
+        LocalDate dateFile;
+        ArrayList<ClientEntity> clients = new ArrayList<ClientEntity>(0);
+        ClientEntity client;
+
+        if(!file.exists()){
+            return clients;
+        }
+
+        try{
+            Scanner fileText = new Scanner(file);
+            String line;
+            String[] splittedLine;
+            while(fileText.hasNextLine()){
+                line=fileText.nextLine();
+                splittedLine = line.split(",");
+                client = new ClientEntity();
+                client.id = Integer.parseInt(splittedLine[0]);
+                client.name = splittedLine[1];
+
+                String[] date = splittedLine[2].split("-");
+                int day = Integer.parseInt(date[2]);
+                int month = Integer.parseInt(date[1]);
+                int year = Integer.parseInt(date[0]);
+                dateFile = LocalDate.of(year, month, day);
+                client.birthDate = dateFile;
+                clients.add(client);
+            }
+            fileText.close();
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }
+        return clients;
+    }
+
 
     //will try to delete client with same id as parameter. returns true if succeeded
     //and false if it fails

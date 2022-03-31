@@ -1,4 +1,5 @@
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
 import java.io.File;
 
@@ -44,6 +45,7 @@ public class Validation {
     public int getValidId(String filename){
         int id;
 
+        File file = new File(filename);
         Scanner scan = new Scanner(System.in);
 
         //checks if id is an int
@@ -56,6 +58,24 @@ public class Validation {
             return -1;
         }
 
+        //if id==0 generates valid id
+        if(id==0){
+            try{
+                int i = 1;
+                while(true){
+                    Scanner fileScan = new Scanner(file);
+                    if(checkDuplicatedID(i, fileScan) == false){
+                        fileScan.close();
+                        return i;
+                    }
+                    fileScan.close();
+                    i++;
+                }
+            }catch(IOException e){
+                e.printStackTrace();
+            }
+        }
+
         //checks if id is less than 0
         if(id < 0){
             System.out.println("ERROR: Invalid input. ID needs to be a positive integer.");
@@ -64,7 +84,6 @@ public class Validation {
         }
 
         //calls checkDuplicatedID to check if id already exists in database
-        File file = new File(filename);
         if(file.exists() && id != -1){
             try{
                 Scanner fileScan = new Scanner(file);
@@ -80,6 +99,7 @@ public class Validation {
                 e.printStackTrace();
             }
         }
+
         return id;
     }
 

@@ -1,11 +1,40 @@
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Scanner;
 
 public class ClientInteractions {
 
+    //List clients
+    //pre-conditions: none
+    //post-conditions: list all clients in database
+    private void listClient(){
+
+        ClientRepository clientRepository = new ClientRepository();
+        Screen screen = new Screen();
+
+        ArrayList<ClientEntity> clients =clientRepository.index();
+
+        if(clients.isEmpty()){
+            System.out.println("No client was found in database");
+        }else{
+            System.out.println("CLIENT LIST:\n");
+
+            screen.clientHeader();
+
+            clients.sort(Comparator.comparing(client -> client.id));
+
+            clients.forEach((client) -> {
+                screen.printClient(client);
+            });
+        }
+        screen.waitInput();
+    }
+
+
     //asks user for client id, if it finds this client will
     //ask user which field to edit
-    //pre-condigions: none
+    //pre-conditions: none
     //post-conditions: desired field edited or a error message
     private void editClient(){
 
@@ -176,12 +205,19 @@ public class ClientInteractions {
     public void configClient(int userChoice){
         switch(userChoice){
             case 1: createClient();
+                    listClient();
                     break;
             case 2: editClient();
-                    break;
+                    listClient();
+                break;
             case 3: deleteClient();
-                    break;
+                    listClient();
+                break;
             case 4: showClient();
+                    listClient();
+                break;
+            case 5: listClient();
+                break;
             default: break;
         }
     }

@@ -15,6 +15,24 @@ public class Screen {
     private final int NUMBER_CHOICES_REPORT_MENU = 3;
     private final int NUMBER_CHOICES_EDIT_CLIENT_MENU = 3;
 
+    //prints header with client field names
+    //pre-conditions: none
+    //post-conditions: client field names printed
+    public void clientHeader(){
+        System.out.print("ID");
+
+        for(int i=0;i<3;i++) System.out.print(" ");
+        System.out.print("Name");
+        for(int i=0;i<3;i++) System.out.print(" ");
+
+        System.out.print("Birth Date");
+        System.out.println();
+
+    }
+
+    //prints edit choices from client
+    //pre-conditions: none
+    //post-conditions: returns choice from edit client menu
     public int editClientMenu(){
         int choice = -1;
 
@@ -41,16 +59,21 @@ public class Screen {
 
     }
 
-
+    //prints client information on screen
+    //pre-conditions: none
+    //post-conditions: client information printed on screen
     public void printClient(ClientEntity client){
+
+
         System.out.print(client.id);
         System.out.print(" ");
         System.out.print(client.name);
         System.out.print(" ");
 
         //format date to brazilian standard
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         System.out.print(client.birthDate.format(formatter));
+        System.out.println();
     }
 
     //wait user to press enter to continue execution
