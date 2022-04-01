@@ -5,6 +5,43 @@ import java.util.Scanner;
 
 public class ClientInteractions {
 
+    //removes food from the foodHistory arraylist
+    //pre-conditions: none
+    //post-conditions: foods with id from parameter removed from all client's foodHistory
+    public void removeFoods(int id){
+        ClientRepository database = new ClientRepository();
+        ArrayList<ClientEntity> clientList = new ArrayList<ClientEntity>(0);
+
+        clientList = database.index();
+
+
+        clientList.forEach((client) -> {
+            for(int i=0;i < client.foodsHistory.size(); i++)
+                if(client.foodsHistory.get(i)==id) {
+                    client.foodsHistory.remove(i);
+                    i--;
+                }
+            database.update(client);
+        });
+    }
+
+    //gets a string with numbers and returns a arraylist\
+    //pre-conditions: string formatted correctly [n.n.n...]
+    //post-conditions: arraylist returned
+    public ArrayList<Integer> getFoodHistory(String s){
+        s = s.substring(s.indexOf("[") + 1);
+        s = s.substring(0, s.indexOf("]"));
+        String[] foodHistory = s.split("\\.");
+        ArrayList<Integer> list = new ArrayList<Integer>(0);
+
+        if(foodHistory[0] != "") {
+            for(String i : foodHistory) {
+                list.add(Integer.parseInt(i));
+            }
+        }
+        return list;
+    }
+
     //List clients
     //pre-conditions: none
     //post-conditions: list all clients in database
@@ -27,10 +64,9 @@ public class ClientInteractions {
             clients.forEach((client) -> {
                 screen.printClient(client);
             });
+            System.out.println();
         }
-        screen.waitInput();
     }
-
 
     //asks user for client id, if it finds this client will
     //ask user which field to edit
@@ -39,7 +75,7 @@ public class ClientInteractions {
     private void editClient(){
 
         boolean valid = false;
-        int id, choiceEdit;
+        int id, choiceEdit, travels;
 
         ClientRepository clientRepository = new ClientRepository();
         Screen screen = new Screen();
@@ -81,6 +117,34 @@ public class ClientInteractions {
                             year = Integer.parseInt(date[2]);
                             LocalDate birthDate = LocalDate.of(year, month, day);
                             client.birthDate = birthDate;
+                            clientRepository.update(client);
+                        }
+                        case 3:{
+                            System.out.println("Insert new number of travels:");
+                            travels = validate.getValidInt();
+                            client.travels = travels;
+                            clientRepository.update(client);
+                        }
+                        case 4:{
+                            FoodInteractions foods = new FoodInteractions();
+                            FoodEntity foundFood = new FoodEntity();
+                            FoodRepository foodRepository = new FoodRepository();
+
+                            //prints food list
+                            foods.interact(5);
+
+                            do {
+                                System.out.println("Insert food id - 0 to stop");
+                                if (scan.hasNextInt()) {
+                                    foundFood.id = scan.nextInt();
+                                    id = foundFood.id;
+                                    foundFood = foodRepository.findById(foundFood.id);
+                                    if (foundFood != null ) {
+                                        client.foodsFullHistory.add(foundFood.id);
+                                        client.foodsHistory.add(foundFood.id);
+                                    }
+                                }
+                            }while(id != 0);
                             clientRepository.update(client);
                         }
                     }
@@ -142,7 +206,8 @@ public class ClientInteractions {
             if (scan.hasNextInt()) {
                 clientFound.id = scan.nextInt();
                 clientFound = clientRepository.findClient(clientFound.id);
-                if (clientFound != null){
+                if (clientFound.id != 0){
+                    screen.clientHeader();
                     screen.printClient(clientFound);
                 }
                 else System.out.println("Client doesn't exist.");
@@ -154,7 +219,6 @@ public class ClientInteractions {
             }
         }while(valid == false);
 
-        screen.waitInput();
     }
 
     //Asks user for the client information and saves it to this instance
@@ -163,7 +227,7 @@ public class ClientInteractions {
     private void createClient(){
         String name;
         String[] date;
-        int id, day, month, year;
+        int id, day, month, year, travels;
 
         Validation validate = new Validation();
         Scanner scan = new Scanner(System.in);
@@ -194,8 +258,12 @@ public class ClientInteractions {
         year = Integer.parseInt(date[2]);
         LocalDate birthDate = LocalDate.of(year, month, day);
 
-        clientRepository.insertClient(id, name, birthDate);
-        //TODO viajens??
+        do{
+            System.out.println("Number of client travels:");
+            travels = validate.getValidInt();
+        }while(travels < 0);
+
+        clientRepository.insertClient(id, name, birthDate, travels);
 
     }
 
@@ -203,21 +271,31 @@ public class ClientInteractions {
     //pre-conditions: none
     //post-conditions:
     public void configClient(int userChoice){
+        Screen screen = new Screen();
         switch(userChoice){
             case 1: createClient();
                     listClient();
+                    screen.waitInput();
                     break;
-            case 2: editClient();
+            case 2: listClient();
+                    editClient();
                     listClient();
+                    screen.waitInput();
                 break;
             case 3: deleteClient();
                     listClient();
+                    screen.waitInput();
                 break;
             case 4: showClient();
-                    listClient();
+                    screen.waitInput();
                 break;
             case 5: listClient();
+                    screen.waitInput();
                 break;
+//            case 6: showFoodHistory();
+//                    break;
+//            case 7: showFullFoodHistory();
+//                    break;
             default: break;
         }
     }

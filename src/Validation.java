@@ -5,6 +5,35 @@ import java.io.File;
 
 public class Validation {
 
+    //reads input and returns it if its a valid positive int
+    //returns -1 if it's invalid
+    //pre-conditions: none
+    //post-conditions: returns a valid int or -1
+    public int getValidInt(){
+        int n;
+
+        Scanner scan = new Scanner(System.in);
+
+        //checks if id is an int
+        if(scan.hasNextInt()) {
+            n = scan.nextInt();
+        }else{
+            System.out.println("ERROR: Invalid input. Travels needs to be a positive integer.");
+            System.out.println();
+            scan.nextLine();
+            return -1;
+        }
+
+        //checks if id is less than 0
+        if(n < 0){
+            System.out.println("ERROR: Invalid input. Travels needs to be a positive integer.");
+            scan.nextLine();
+            return -1;
+        }
+
+       return n;
+    }
+
     //verifies if a number is even
     //pre-conditions: none
     //post-conditions: returns true if number is even and
@@ -60,6 +89,7 @@ public class Validation {
 
         //if id==0 generates valid id
         if(id==0){
+            if(file.exists() == false) return 1;
             try{
                 int i = 1;
                 while(true){
@@ -84,7 +114,7 @@ public class Validation {
         }
 
         //calls checkDuplicatedID to check if id already exists in database
-        if(file.exists() && id != -1){
+        if(file.exists()){
             try{
                 Scanner fileScan = new Scanner(file);
                 if(this.checkDuplicatedID(id, fileScan)) {

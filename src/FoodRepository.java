@@ -200,6 +200,9 @@ public class FoodRepository {
                 idFile = Integer.parseInt(splittedLine[0]);
                 if(idFile != id){
                     fw.write(line+"\n");
+                }else{
+                    ClientInteractions client = new ClientInteractions();
+                    client.removeFoods(id);
                 }
             }
             fileText.close();

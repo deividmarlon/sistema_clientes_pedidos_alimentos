@@ -11,6 +11,9 @@ public class ClientRepository {
        file = new File("databaseClient.txt");
     }
 
+    //returns an arraylist with all clients from database
+    //pre-conditions: none
+    //post-conditions: arraylist returned
     public ArrayList<ClientEntity> index(){
 
         LocalDate dateFile;
@@ -38,6 +41,14 @@ public class ClientRepository {
                 int year = Integer.parseInt(date[0]);
                 dateFile = LocalDate.of(year, month, day);
                 client.birthDate = dateFile;
+                client.travels = Integer.parseInt(splittedLine[3]);
+
+                if(splittedLine.length > 4) {
+                    ClientInteractions interactions = new ClientInteractions();
+                    client.foodsHistory = interactions.getFoodHistory(splittedLine[4]);
+                    client.foodsFullHistory = interactions.getFoodHistory(splittedLine[5]);
+                }
+
                 clients.add(client);
             }
             fileText.close();
@@ -46,7 +57,6 @@ public class ClientRepository {
         }
         return clients;
     }
-
 
     //will try to delete client with same id as parameter. returns true if succeeded
     //and false if it fails
@@ -139,11 +149,17 @@ public class ClientRepository {
                     dateFile = LocalDate.of(year, month, day);
 
                     client.birthDate = dateFile;
-                    scan.close();
-                    return client;
+                    client.travels = Integer.parseInt(line[3]);
+
+                    if(line.length > 4) {
+                        ClientInteractions interactions = new ClientInteractions();
+                        client.foodsHistory = interactions.getFoodHistory(line[4]);
+                        client.foodsFullHistory = interactions.getFoodHistory(line[4]);
+                    }
                 }
             }
-            return null;
+            scan.close();
+            return client;
 
         }catch (FileNotFoundException e){
             e.printStackTrace();
@@ -155,7 +171,7 @@ public class ClientRepository {
     //Inserts client values into database
     //pre-conditions: valid values in class variables
     //post-conditions: information inserted into database
-    public void insertClient(int id, String name, LocalDate birthDate){
+    public void insertClient(int id, String name, LocalDate birthDate, int travels){
 
         //checks if file exists, if it doesn't, create file
         if(!file.exists()){
@@ -171,7 +187,7 @@ public class ClientRepository {
         //writes in database
         try{
             FileWriter database = new FileWriter(file.getName(), true);
-            database.write(id + "," + name + "," + birthDate + "\n" );
+            database.write(id + "," + name + "," + birthDate + "," + travels + "\n" );
             database.close();
         }catch(IOException e){
             System.out.println("ERROR: Could not write in database.txt");
@@ -199,8 +215,21 @@ public class ClientRepository {
             }
         }
 
+        String foodHistory = "[";
+        for(Integer i : client.foodsHistory){
+            foodHistory = foodHistory.concat(i.toString() + ".");
+        }
+        foodHistory = foodHistory.concat("]");
+
+        String foodFullHistory = "[";
+        for(Integer i : client.foodsFullHistory){
+            foodFullHistory = foodFullHistory.concat(i.toString() + ".");
+        }
+        foodFullHistory = foodFullHistory.concat("]");
+
         //Prepares data string to write in database
-        String data = client.id +","+ client.name + "," + client.birthDate;
+        String data = client.id +","+ client.name + "," + client.birthDate +
+                       "," + client.travels + "," + foodHistory + "," + foodFullHistory;
 
         //Writes tempFile with original file content but
         //replacing the corresponding food parameter line

@@ -152,8 +152,6 @@ public class FoodInteractions {
 
         ArrayList<FoodEntity> foods = foodRepository.index();
 
-        //TODO send list to screen
-
         if(foods.isEmpty()){
             System.out.println("Any food was found in database");
         }else{
@@ -167,25 +165,28 @@ public class FoodInteractions {
                 System.out.println("");
             });
         }
-        screen.waitInput();
     }
 
     //manages the user choice from the client sub menu
     //pre-conditions: none
     //post-conditions:
     public void interact(int userChoice){
+        Screen screen = new Screen();
         switch(userChoice){
             case 1: createFood();
                     listFoods();
+                    screen.waitInput();
                 break;
             case 2: editFood();
                     listFoods();
+                    screen.waitInput();
                 break;
             case 3: deleteFood();
                     listFoods();
+                    screen.waitInput();
                 break;
             case 4: showFood();
-                    listFoods();
+                    screen.waitInput();
                 break;
             case 5: listFoods();
                 break;

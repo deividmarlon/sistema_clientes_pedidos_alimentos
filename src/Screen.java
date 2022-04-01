@@ -9,11 +9,11 @@ public class Screen {
     private static final String SOFTWARE_NAME = "Food orders management system";
     //number of choices from each menu
     private final int NUMBER_CHOICES_MAIN_MENU = 4;
-    private final int NUMBER_CHOICES_CLIENT_MENU = 7;
+    private final int NUMBER_CHOICES_CLIENT_MENU = 8;
     private final int NUMBER_CHOICES_FOOD_MENU = 6;
     private final int NUMBER_CHOICES_EDIT_FOOD_MENU = 2;
     private final int NUMBER_CHOICES_REPORT_MENU = 3;
-    private final int NUMBER_CHOICES_EDIT_CLIENT_MENU = 3;
+    private final int NUMBER_CHOICES_EDIT_CLIENT_MENU = 5;
 
     //prints header with client field names
     //pre-conditions: none
@@ -21,11 +21,17 @@ public class Screen {
     public void clientHeader(){
         System.out.print("ID");
 
-        for(int i=0;i<3;i++) System.out.print(" ");
+        for(int i=0;i<2;i++) System.out.print(" ");
         System.out.print("Name");
-        for(int i=0;i<3;i++) System.out.print(" ");
+        for(int i=0;i<2;i++) System.out.print(" ");
 
         System.out.print("Birth Date");
+        System.out.print(" ");
+        System.out.print("Travels");
+        System.out.print(" ");
+        System.out.print("Active Foods");
+        System.out.print(" ");
+        System.out.print("Foods History");
         System.out.println();
 
     }
@@ -47,7 +53,9 @@ public class Screen {
             System.out.println();
             System.out.println("1. Name.");
             System.out.println("2. Birth Date.");
-            System.out.println("3. Exit to main menu.");
+            System.out.println("3. Travels");
+            System.out.println("4. Add food");
+            System.out.println("5. Exit to main menu.");
 
             choice = validate.getValidChoice(NUMBER_CHOICES_EDIT_CLIENT_MENU);
 
@@ -73,7 +81,26 @@ public class Screen {
         //format date to brazilian standard
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         System.out.print(client.birthDate.format(formatter));
-        System.out.println();
+        System.out.print(" ");
+        System.out.print(client.travels);
+        System.out.print(" ");
+
+        String foodHistory = "[";
+        for(Integer i : client.foodsHistory){
+            foodHistory = foodHistory.concat(i.toString() + ".");
+        }
+        foodHistory = foodHistory.concat("]");
+
+        System.out.print(foodHistory);
+        System.out.print(" ");
+
+        String foodFullHistory = "[";
+        for(Integer i : client.foodsFullHistory){
+            foodFullHistory = foodFullHistory.concat(i.toString() + ".");
+        }
+        foodFullHistory = foodFullHistory.concat("]");
+
+        System.out.println(foodFullHistory);
     }
 
     //wait user to press enter to continue execution
@@ -194,9 +221,10 @@ public class Screen {
             System.out.println("2. Edit existing client.");
             System.out.println("3. Remove existing client.");
             System.out.println("4. Find client.");
-            System.out.println("5. View history.");
-            System.out.println("6. View full history.");
-            System.out.println("7. Exit to main menu");
+            System.out.println("5. List client");
+            System.out.println("6. View client's foods.");
+            System.out.println("7. View full food history.");
+            System.out.println("8. Exit to main menu");
 
             choice = validate.getValidChoice(NUMBER_CHOICES_CLIENT_MENU);
 
@@ -240,6 +268,9 @@ public class Screen {
 
     }
 
+    //prints edit choices from food menu
+    //pre-conditions: none
+    //post-conditions: returns choice from edit food menu
     public int editFoodMenu(){
         int choice = -1;
 
