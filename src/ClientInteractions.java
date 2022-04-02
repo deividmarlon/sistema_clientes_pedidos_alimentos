@@ -5,67 +5,53 @@ import java.util.Scanner;
 
 public class ClientInteractions {
 
-    //removes food from the foodHistory arraylist
+    private Logger logger = new Logger();
+
+    //Asks user for the client information and saves it to this instance
     //pre-conditions: none
-    //post-conditions: foods with id from parameter removed from all client's foodHistory
-    public void removeFoods(int id){
-        ClientRepository database = new ClientRepository();
-        ArrayList<ClientEntity> clientList = new ArrayList<ClientEntity>(0);
+    //post-conditions: information saved
+    private void createClient(){
 
-        clientList = database.index();
+        String[] date;
+        int day, month, year;
 
+        ClientEntity newClient = new ClientEntity();
 
-        clientList.forEach((client) -> {
-            for(int i=0;i < client.foodsHistory.size(); i++)
-                if(client.foodsHistory.get(i)==id) {
-                    client.foodsHistory.remove(i);
-                    i--;
-                }
-            database.update(client);
-        });
-    }
-
-    //gets a string with numbers and returns an arraylist\
-    //pre-conditions: string formatted correctly [n.n.n...]
-    //post-conditions: arraylist returned
-    public ArrayList<Integer> getFoodHistory(String s){
-        s = s.substring(s.indexOf("[") + 1);
-        s = s.substring(0, s.indexOf("]"));
-        String[] foodHistory = s.split("\\.");
-        ArrayList<Integer> list = new ArrayList<Integer>(0);
-
-        if(foodHistory[0] != "") {
-            for(String i : foodHistory) {
-                list.add(Integer.parseInt(i));
-            }
-        }
-        return list;
-    }
-
-    //List clients
-    //pre-conditions: none
-    //post-conditions: list all clients in database
-    private void listClient(){
-
+        Validation validate = new Validation();
+        Scanner scan = new Scanner(System.in);
         ClientRepository clientRepository = new ClientRepository();
-        Screen screen = new Screen();
 
-        ArrayList<ClientEntity> clients =clientRepository.index();
+        do {
+            System.out.println("ID: (optional - input a 0)");
+            newClient.id = validate.getValidId("databaseClient.txt");
+        }while(newClient.id < 0 );
 
-        if(clients.isEmpty()){
-            System.out.println("No client was found in database");
-        }else{
-            System.out.println("CLIENT LIST:\n");
+        System.out.println("Name:");
+        newClient.name = scan.nextLine();
 
-            screen.clientHeader();
+        do {
+            System.out.println("Birth date: (dd-mm-aaaa)");
+            String temp = scan.nextLine();
+            date = temp.split("-");
+            if(!validate.validateDate(date)){
+                System.out.println("ERROR: Invalid date");
+                System.out.println();
+                logger.write("ERROR: Invalid date");
+            }
+        }while(!validate.validateDate(date));
 
-            clients.sort(Comparator.comparing(client -> client.id));
+        day = Integer.parseInt(date[0]);
+        month = Integer.parseInt(date[1]);
+        year = Integer.parseInt(date[2]);
+        newClient.birthDate = LocalDate.of(year, month, day);
 
-            clients.forEach((client) -> {
-                screen.printClient(client);
-            });
-            System.out.println();
-        }
+        do{
+            System.out.println("Number of client travels:");
+            newClient.travels = validate.getValidInt();
+        }while(newClient.travels < 0);
+
+        clientRepository.save(newClient);
+
     }
 
     //asks user for client id, if it finds this client will
@@ -87,7 +73,7 @@ public class ClientInteractions {
             if(scan.hasNextInt()){
                 id = scan.nextInt();
                 scan.nextLine();
-                ClientEntity client = clientRepository.findClient(id);
+                ClientEntity client = clientRepository.findById(id);
                 if(client != null){
                     choiceEdit = screen.editClientMenu();
                     switch (choiceEdit){
@@ -108,6 +94,7 @@ public class ClientInteractions {
                                 if(!validate.validateDate(date)){
                                     System.out.println("ERROR: Invalid date");
                                     System.out.println();
+                                    logger.write("ERROR: Invalid date");
                                 }
 
                             }while(!validate.validateDate(date));
@@ -151,11 +138,51 @@ public class ClientInteractions {
                             break;
                         }
                     }
-                }else System.out.println("Client doesn't exist.");
+                }else {
+                    System.out.println("Client doesn't exist.");
+                    logger.write("ERROR: Invalid date");
+                }
                 valid = true;
             }else{
                 System.out.println("Invalid id.");
                 System.out.println();
+                logger.write("Invalid id.");
+                scan.nextLine();
+            }
+        }while(valid == false);
+
+    }
+
+    //asks user for client id and tries to find it in database
+    //pre-conditions: none
+    //post-conditions: creates a class instance if client id exists
+    private void showClient(){
+
+        boolean valid = false;
+
+        ClientRepository clientRepository = new ClientRepository();
+        ClientEntity clientFound = new ClientEntity();
+        Scanner scan = new Scanner(System.in);
+        Screen screen = new Screen();
+
+        do {
+            System.out.println("Insert client id");
+            if (scan.hasNextInt()) {
+                clientFound.id = scan.nextInt();
+                clientFound = clientRepository.findById(clientFound.id);
+                if (clientFound != null && clientFound.id != 0){
+                    screen.clientHeader();
+                    screen.printClient(clientFound);
+                }
+                else {
+                    System.out.println("Client doesn't exist.");
+                    logger.write("Client doesn't exist.");
+                }
+                valid = true;
+            } else {
+                System.out.println("Invalid id.");
+                System.out.println();
+                logger.write("Invalid id.");
                 scan.nextLine();
             }
         }while(valid == false);
@@ -178,125 +205,114 @@ public class ClientInteractions {
             System.out.println("Insert client id");
             if(scan.hasNextInt()){
                 id = scan.nextInt();
-                if(clientRepository.deleteClient(id))
+                if(clientRepository.delete(id))
                     System.out.println("Client deleted!");
-                else
+                else{
                     System.out.println("Client doesn't exist.");
+                    logger.write("Client doesn't exist.");
+                }
                 valid = true;
 
             }else{
                 System.out.println("Invalid id.");
                 System.out.println();
+                logger.write("Invalid id.");
                 scan.nextLine();
             }
         }while(valid == false);
     }
 
-    //asks user for client id and tries to find it in database
+    //List clients
     //pre-conditions: none
-    //post-conditions: creates a class instance if client id exists
-    private void showClient(){
-
-        boolean valid = false;
+    //post-conditions: list all clients in database
+    private void listClients(){
 
         ClientRepository clientRepository = new ClientRepository();
-        ClientEntity clientFound = new ClientEntity();
-        Scanner scan = new Scanner(System.in);
         Screen screen = new Screen();
 
-        do {
-            System.out.println("Insert client id");
-            if (scan.hasNextInt()) {
-                clientFound.id = scan.nextInt();
-                clientFound = clientRepository.findClient(clientFound.id);
-                if (clientFound.id != 0){
-                    screen.clientHeader();
-                    screen.printClient(clientFound);
-                }
-                else System.out.println("Client doesn't exist.");
-                valid = true;
-            } else {
-                System.out.println("Invalid id.");
-                System.out.println();
-                scan.nextLine();
-            }
-        }while(valid == false);
+        ArrayList<ClientEntity> clients = clientRepository.index();
 
+        if(clients.isEmpty()){
+            System.out.println("No client was found in database");
+        }else{
+            System.out.println("CLIENT LIST:\n");
+
+            screen.clientHeader();
+
+            clients.sort(Comparator.comparing(client -> client.id));
+
+            clients.forEach((client) -> {
+                screen.printClient(client);
+            });
+            System.out.println();
+        }
     }
 
-    //Asks user for the client information and saves it to this instance
+    //removes food from the foodHistory arraylist
     //pre-conditions: none
-    //post-conditions: information saved
-    private void createClient(){
-        String name;
-        String[] date;
-        int id, day, month, year, travels;
+    //post-conditions: foods with id from parameter removed from all client's foodHistory
+    public void removeFoods(int id){
+        ClientRepository database = new ClientRepository();
+        ArrayList<ClientEntity> clientList = new ArrayList<ClientEntity>(0);
 
-        Validation validate = new Validation();
-        Scanner scan = new Scanner(System.in);
-        ClientRepository clientRepository = new ClientRepository();
+        clientList = database.index();
 
-        do {
-            System.out.println("ID: (optional - input a 0)");
-            id = validate.getValidId("databaseClient.txt");
-        }while(id < 0 );
 
-        System.out.println("Name:");
-        name = scan.nextLine();
+        clientList.forEach((client) -> {
+            for(int i=0;i < client.foodsHistory.size(); i++)
+                if(client.foodsHistory.get(i)==id) {
+                    client.foodsHistory.remove(i);
+                    i--;
+                }
+            database.update(client);
+        });
+    }
 
-        do {
-            System.out.println("Birth date: (dd-mm-aaaa)");
-            String temp = scan.nextLine();
-            date = temp.split("-");
-            //TODO create bool date
-            if(!validate.validateDate(date)){
-                System.out.println("ERROR: Invalid date");
-                System.out.println();
+    //gets a string with numbers and returns an arraylist\
+    //pre-conditions: string formatted correctly [n.n.n...]
+    //post-conditions: arraylist returned
+    public ArrayList<Integer> getFoodHistory(String s){
+        s = s.substring(s.indexOf("[") + 1);
+        s = s.substring(0, s.indexOf("]"));
+        String[] foodHistory = s.split("\\.");
+        ArrayList<Integer> list = new ArrayList<Integer>(0);
+
+        if(foodHistory[0] != "") {
+            for(String i : foodHistory) {
+                list.add(Integer.parseInt(i));
             }
-
-        }while(!validate.validateDate(date));
-
-        day = Integer.parseInt(date[0]);
-        month = Integer.parseInt(date[1]);
-        year = Integer.parseInt(date[2]);
-        LocalDate birthDate = LocalDate.of(year, month, day);
-
-        do{
-            System.out.println("Number of client travels:");
-            travels = validate.getValidInt();
-        }while(travels < 0);
-
-        clientRepository.insertClient(id, name, birthDate, travels);
-
+        }
+        return list;
     }
 
     //manages the user choice from the client sub menu
     //pre-conditions: none
     //post-conditions:
-    public void configClient(int userChoice){
+    public void interact(int userChoice){
         Screen screen = new Screen();
         switch(userChoice){
             case 1: createClient();
-                    listClient();
+                    listClients();
                     screen.waitInput();
                     break;
-            case 2: listClient();
+            case 2: listClients();
                     editClient();
-                    listClient();
+                    listClients();
                     screen.waitInput();
                 break;
             case 3: deleteClient();
-                    listClient();
+                    listClients();
                     screen.waitInput();
                 break;
             case 4: showClient();
                     screen.waitInput();
                 break;
-            case 5: listClient();
+            case 5: listClients();
                     screen.waitInput();
                 break;
             default: break;
         }
     }
+
 
 }

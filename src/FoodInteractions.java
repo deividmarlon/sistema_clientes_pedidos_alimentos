@@ -4,6 +4,8 @@ import java.util.Scanner;
 
 public class FoodInteractions {
 
+    private Logger logger = new Logger();
+
     //Asks user for the food information and saves it to this instance
     //pre-conditions: none
     //post-conditions: food saved
@@ -22,10 +24,22 @@ public class FoodInteractions {
         System.out.println("Name:");
         newFood.name = scan.nextLine();
 
+        System.out.println("Brand:");
+        newFood.brand = scan.nextLine();
+
+        do{
+            System.out.println("Number of client travels:");
+            newFood.calories = validate.getValidDouble();
+        }while(newFood.calories < 0);
+
+        do{
+            System.out.println("Number of client travels:");
+            newFood.price = validate.getValidDouble();
+        }while(newFood.price < 0);
+
         FoodRepository foodRepository = new FoodRepository();
 
         foodRepository.save(newFood);
-
 
     }
 
@@ -36,14 +50,13 @@ public class FoodInteractions {
 
         boolean valid = false;
         int id;
+        int choiceEdit;
 
         FoodEntity food;
         FoodRepository foodRepository = new FoodRepository();
-
-        int choiceEdit;
         Screen screen = new Screen();
-
         Scanner scan = new Scanner(System.in);
+        Validation validate = new Validation();
 
         do {
             System.out.println("Insert food id");
@@ -57,7 +70,25 @@ public class FoodInteractions {
                         case 1: {
                             System.out.println("Insert a new name:");
                             food.name = scan.nextLine();
-                            foodRepository.update(food); //TODO here
+                            foodRepository.update(food);
+                            break;
+                        }
+                        case 2: {
+                            System.out.println("Insert a new brand:");
+                            food.name = scan.nextLine();
+                            foodRepository.update(food);
+                            break;
+                        }
+                        case 3: {
+                            System.out.println("Insert a new number of calories:");
+                            food.calories = validate.getValidDouble();
+                            foodRepository.update(food);
+                            break;
+                        }
+                        case 4: {
+                            System.out.println("Insert a new price:");
+                            food.price = validate.getValidDouble();
+                            foodRepository.update(food);
                             break;
                         }
                         default: break;
@@ -70,6 +101,7 @@ public class FoodInteractions {
             } else {
                 System.out.println("Invalid id.");
                 System.out.println();
+                logger.write("Invalid id.");
                 scan.nextLine();
             }
         }while(valid == false);
@@ -84,26 +116,25 @@ public class FoodInteractions {
         boolean valid = false;
 
         FoodEntity foundFood = new FoodEntity();
-
         FoodRepository foodRepository = new FoodRepository();
-
         Scanner scan = new Scanner(System.in);
+        Screen screen = new Screen();
 
         do {
             System.out.println("Insert food id");
             if (scan.hasNextInt()) {
                 foundFood.id = scan.nextInt();
                 foundFood = foodRepository.findById(foundFood.id);
-                if (foundFood != null){
-                    System.out.println("Food found:");
-                    System.out.println("ID: " + foundFood.id);
-                    System.out.println("Name: " + foundFood.name);
+                if (foundFood != null && foundFood.id != 0 ){
+                    screen.printFoodHeader();
+                    screen.printFood(foundFood);
                 }
                 else System.out.println("Food doesn't exist.");
                 valid = true;
             } else {
                 System.out.println("Invalid id.");
                 System.out.println();
+                logger.write("Invalid id.");
                 scan.nextLine();
             }
         }while(valid == false);
@@ -136,6 +167,7 @@ public class FoodInteractions {
             } else {
                 System.out.println("Invalid id.");
                 System.out.println();
+                logger.write("Invalid id.");
                 scan.nextLine();
             }
         }while(valid == false);
@@ -160,11 +192,7 @@ public class FoodInteractions {
             foods.sort(Comparator.comparing(food -> food.id));
 
             foods.forEach((food) -> {
-                System.out.println("Id: " + food.id);
-                System.out.println("Name: " + food.name);
-                System.out.println("Calories: " + food.calories);
-                System.out.println("Price: " + food.price);
-                System.out.println("");
+                screen.printFood(food);
             });
         }
     }

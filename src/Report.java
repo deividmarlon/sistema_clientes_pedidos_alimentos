@@ -11,7 +11,9 @@ public class Report {
 
     private File file;
 
-    private static final String SOFTWARE_NAME = "Food orders management system";
+    private Logger logger = new Logger();
+
+    private static final String SOFTWARE_NAME = "Foods and clients management system";
 
     private static final String AUTHORS_NAME = "Authors: Daniel Zonta Ojeda, Deivid Marlon";
 
@@ -57,8 +59,10 @@ public class Report {
 
                         reportFile.write("\n");
                     }catch(IOException e){
-                        System.out.println("ERROR: Could not write in report file");
+                        System.out.println("ERROR: Could not write in report file.");
                         e.printStackTrace();
+                        logger.write("ERROR: Could not write in report file.");
+                        logger.write(e.getMessage());
                     }
                 });
             }
@@ -66,8 +70,10 @@ public class Report {
             reportFile.close();
 
         }catch(IOException e){
-            System.out.println("ERROR: Could not write in report file");
+            System.out.println("ERROR: Could not write in report file.");
             e.printStackTrace();
+            logger.write("ERROR: Could not write in report file.");
+            logger.write(e.getMessage());
         }
     }
 
@@ -77,18 +83,20 @@ public class Report {
         Date now = new Date();
         SimpleDateFormat datePattern = new SimpleDateFormat ("yyyy-MM-dd'_'HH-mm-ss-SS");
 
-        new File("./logs").mkdirs();
-        file = new File("./logs/"+fileName+datePattern.format(now)+".txt");
+        new File("./reports").mkdirs();
+        file = new File("./reports/"+fileName+datePattern.format(now)+".txt");
 
         //Checks if file exists, if it doesn't, create file
         if(!file.exists()){
             System.out.println("Creating report file: " + file.getName() + " ...");
             try{
-                if(file.createNewFile()) System.out.println(file.getName() + " created in logs directory!");
+                if(file.createNewFile()) System.out.println(file.getName() + " created in reports directory!");
                 flag = true;
             }catch(IOException e){
                 System.out.println("ERROR: Report file could not be created.");
                 e.printStackTrace();
+                logger.write("ERROR: Report file could not be created.");
+                logger.write(e.getMessage());
                 flag = false;
             }
         }
@@ -158,8 +166,10 @@ public class Report {
             reportFile.close();
 
         }catch(IOException e){
-            System.out.println("ERROR: Could not write in report file");
+            System.out.println("ERROR: Could not write in report file.");
             e.printStackTrace();
+            logger.write("ERROR: Could not write in report file.");
+            logger.write(e.getMessage());
         }
     }
 
@@ -191,6 +201,8 @@ public class Report {
                     }catch(IOException e){
                         System.out.println("ERROR: Could not write in report file");
                         e.printStackTrace();
+                        logger.write("ERROR: Could not write in report file.");
+                        logger.write(e.getMessage());
                     }
                 });
             }
@@ -200,6 +212,8 @@ public class Report {
         }catch(IOException e){
             System.out.println("ERROR: Could not write in report file");
             e.printStackTrace();
+            logger.write("ERROR: Could not write in report file.");
+            logger.write(e.getMessage());
         }
     }
 
@@ -220,8 +234,5 @@ public class Report {
             }
 
     }
-
-
-
 
 }

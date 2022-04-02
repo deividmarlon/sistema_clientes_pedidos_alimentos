@@ -6,7 +6,7 @@ public class Screen {
     //CONSTANTS
 
     //software name to calculate size of some menus.
-    private static final String SOFTWARE_NAME = "Food orders management system";
+    private static final String SOFTWARE_NAME = "Foods and clients management system";
     //number of choices from each menu
     private final int NUMBER_CHOICES_MAIN_MENU = 4;
     private final int NUMBER_CHOICES_CLIENT_MENU = 6;
@@ -34,7 +34,6 @@ public class Screen {
         System.out.print(" ");
         System.out.print("Foods History");
         System.out.println();
-
     }
 
     //prints edit choices from client
@@ -292,6 +291,34 @@ public class Screen {
         if(choice != NUMBER_CHOICES_FOOD_MENU) return choice;
         else return 0;
 
+    }
+
+    public void printFoodHeader(){
+        System.out.print("ID");
+
+        for(int i=0;i<2;i++) System.out.print(" ");
+        System.out.print("Name");
+        for(int i=0;i<2;i++) System.out.print(" ");
+
+        System.out.print("Brand");
+        System.out.print(" ");
+        System.out.print("Calories");
+        System.out.print(" ");
+        System.out.print("Price");
+        System.out.println();
+    }
+
+    public void printFood(FoodEntity food){
+        System.out.print(food.id);
+        System.out.print(" ");
+        System.out.print(food.name);
+        System.out.print(" ");
+        System.out.print(food.brand);
+        System.out.print(" ");
+        System.out.print(food.calories);
+        System.out.print(" ");
+        System.out.print(food.price);
+        System.out.print(" ");
     }
 
     //prints report menu, reads an int and returns it if it's a valid input

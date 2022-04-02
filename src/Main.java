@@ -29,7 +29,7 @@ public class Main {
                         choiceSubMenu = screen.clientMenu();
                         if (choiceSubMenu != 0) {
                             ClientInteractions clientInteractions = new ClientInteractions();
-                            clientInteractions.configClient(choiceSubMenu);
+                            clientInteractions.interact(choiceSubMenu);
                             //TODO report.printClient()
                         }
                     }while(choiceSubMenu != 0);

@@ -5,6 +5,8 @@ import java.io.File;
 
 public class Validation {
 
+    private Logger logger = new Logger();
+
     //reads input and returns it if its a valid positive int
     //returns -1 if it's invalid
     //pre-conditions: none
@@ -20,6 +22,7 @@ public class Validation {
         }else{
             System.out.println("ERROR: Invalid input. Travels needs to be a positive integer.");
             System.out.println();
+            logger.write("ERROR: Invalid input. Travels needs to be a positive integer.");
             scan.nextLine();
             return -1;
         }
@@ -27,11 +30,39 @@ public class Validation {
         //checks if id is less than 0
         if(n < 0){
             System.out.println("ERROR: Invalid input. Travels needs to be a positive integer.");
+            logger.write("ERROR: Invalid input. Travels needs to be a positive integer.");
             scan.nextLine();
             return -1;
         }
 
        return n;
+    }
+
+    public double getValidDouble(){
+        double n;
+
+        Scanner scan = new Scanner(System.in);
+
+        //checks if id is an int
+        if(scan.hasNextDouble()) {
+            n = scan.nextDouble();
+        }else{
+            System.out.println("ERROR: Invalid input. Value needs to be a positive double.");
+            System.out.println();
+            logger.write("ERROR: Invalid input. Value needs to be a positive double.");
+            scan.nextLine();
+            return -1;
+        }
+
+        //checks if id is less than 0
+        if(n < 0){
+            System.out.println("ERROR: Invalid input. Value needs to be a positive double.");
+            logger.write("ERROR: Invalid input. Value needs to be a positive double.");
+            scan.nextLine();
+            return -1;
+        }
+
+        return n;
     }
 
     //verifies if a number is even
@@ -55,12 +86,14 @@ public class Validation {
             if(!(choice>=1 && choice<=numberChoices)){
                 System.out.println("ERROR: Invalid input.");
                 System.out.println();
+                logger.write("ERROR: Invalid input.");
                 scan.nextLine();
                 choice = -1;
             }
         }else{
             System.out.println("ERROR: Invalid input.");
             System.out.println();
+            logger.write("ERROR: Invalid input.");
             scan.nextLine();
             choice = -1;
         }
@@ -83,6 +116,7 @@ public class Validation {
         }else{
             System.out.println("ERROR: Invalid input. ID needs to be a positive integer.");
             System.out.println();
+            logger.write("ERROR: Invalid input. ID needs to be a positive integer.");
             scan.nextLine();
             return -1;
         }
@@ -103,12 +137,14 @@ public class Validation {
                 }
             }catch(IOException e){
                 e.printStackTrace();
+                logger.write(e.getMessage());
             }
         }
 
         //checks if id is less than 0
         if(id < 0){
             System.out.println("ERROR: Invalid input. ID needs to be a positive integer.");
+            logger.write("ERROR: Invalid input. ID needs to be a positive integer.");
             scan.nextLine();
             return -1;
         }
@@ -119,6 +155,7 @@ public class Validation {
                 Scanner fileScan = new Scanner(file);
                 if(this.checkDuplicatedID(id, fileScan)) {
                     System.out.println("ERROR: ID already exists.");
+                    logger.write("ERROR: ID already exists.");
                     System.out.println();
                     fileScan.close();
                     return -1;
