@@ -13,7 +13,6 @@ public class Screen {
     private final int NUMBER_CHOICES_EDIT_FOOD_MENU = 2;
     private final int NUMBER_CHOICES_REPORT_MENU = 3;
 
-
     //prints a centralized header with the software name and a message
     // in the style: 'SOFTWARE_NAME' - 'header'
     //pre-conditions: none

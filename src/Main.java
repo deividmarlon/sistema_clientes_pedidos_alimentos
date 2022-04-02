@@ -50,8 +50,8 @@ public class Main {
                         choiceSubMenu = screen.reportMenu();
                         if (choiceSubMenu != 0) {
                             //TODO create report class
-                            //Report report = new Report
-                            //report.configReport(choiceSubMenu);
+                            ReportInteractions reportInteractions = new ReportInteractions();
+                            reportInteractions.interact(choiceSubMenu);
                         }
                     }while(choiceSubMenu != 0);
                     break;

@@ -159,6 +159,8 @@ public class FoodInteractions {
             foods.forEach((food) -> {
                 System.out.println("Id: " + food.id);
                 System.out.println("Name: " + food.name);
+                System.out.println("Calories: " + food.calories);
+                System.out.println("Price: " + food.price);
                 System.out.println("");
             });
         }
