@@ -319,6 +319,7 @@ public class Screen {
         System.out.print(" ");
         System.out.print(food.price);
         System.out.print(" ");
+        System.out.println();
     }
 
     //prints report menu, reads an int and returns it if it's a valid input
