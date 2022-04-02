@@ -12,7 +12,8 @@ public class FoodRepository {
     private Logger logger = new Logger();
 
     FoodRepository(){
-        file = new File("databaseFood.txt");
+        new File("./databases/").mkdirs();
+        file = new File("./databases/databaseFood.txt");
 
         //Checks if file exists, if it doesn't, create file
         if(!file.exists()){
@@ -51,6 +52,9 @@ public class FoodRepository {
                 food = new FoodEntity();
                 food.id = Integer.parseInt(splittedLine[0]);
                 food.name = splittedLine[1];
+                food.brand = splittedLine[2];
+                food.calories = Double.parseDouble(splittedLine[3]);
+                food.price = Double.parseDouble(splittedLine[4]);
                 foods.add(food);
             }
             fileText.close();
@@ -77,7 +81,7 @@ public class FoodRepository {
 
         //Writes data string in database
         try{
-            FileWriter database = new FileWriter(file.getName(), true);
+            FileWriter database = new FileWriter(file.getAbsolutePath(), true);
             database.write(data);
             database.close();
             return true;
@@ -103,7 +107,6 @@ public class FoodRepository {
 
         try{
             Scanner fileText = new Scanner(file);
-            //TODO find
             int idFile;
             String line;
             String [] splittedLine;
@@ -115,6 +118,9 @@ public class FoodRepository {
                 if(idFile == id) {
                     food.id = idFile;
                     food.name = splittedLine[1];
+                    food.brand = splittedLine[2];
+                    food.calories = Double.parseDouble(splittedLine[3]);
+                    food.price = Double.parseDouble(splittedLine[4]);
                     fileText.close();
                     return food;
                 }
@@ -152,7 +158,7 @@ public class FoodRepository {
         }
 
         //Prepares data string to write in database
-        String data = food.id +","+ food.name;
+        String data = food.id +","+ food.name +","+ food.brand +","+ food.calories +","+ food.price + "\n";
 
         //Writes tempFile with original file content but
         //replacing the corresponding food parameter line
@@ -188,7 +194,7 @@ public class FoodRepository {
         //Replace original file by temp file
 
         file.delete();
-        file = new File("databaseFood.txt");
+        file = new File("./databases/databaseFood.txt");
         tempFile.renameTo(file);
 
         return true;
@@ -253,7 +259,7 @@ public class FoodRepository {
         //Replace original file by temp file
 
         file.delete();
-        file = new File("databaseFood.txt");
+        file = new File("./databases/databaseFood.txt");
         tempFile.renameTo(file);
 
         return true;

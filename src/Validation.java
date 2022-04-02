@@ -107,7 +107,7 @@ public class Validation {
     public int getValidId(String filename){
         int id;
 
-        File file = new File(filename);
+        File file = new File("./databases/"+filename);
         Scanner scan = new Scanner(System.in);
 
         //checks if id is an int

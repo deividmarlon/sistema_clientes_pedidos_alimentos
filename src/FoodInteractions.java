@@ -28,12 +28,12 @@ public class FoodInteractions {
         newFood.brand = scan.nextLine();
 
         do{
-            System.out.println("Number of client travels:");
+            System.out.println("Number of calories:");
             newFood.calories = validate.getValidDouble();
         }while(newFood.calories < 0);
 
         do{
-            System.out.println("Number of client travels:");
+            System.out.println("Price:");
             newFood.price = validate.getValidDouble();
         }while(newFood.price < 0);
 
@@ -42,7 +42,6 @@ public class FoodInteractions {
         foodRepository.save(newFood);
 
     }
-
     //Asks user for food id and tries to update it database
     //pre-conditions: food with target id exists
     //post-conditions: food deleted

@@ -10,7 +10,8 @@ public class ClientRepository {
     private Logger logger = new Logger();
 
     ClientRepository(){
-       file = new File("databaseClient.txt");
+       new File("./databases/").mkdirs();
+       file = new File("./databases/databaseClient.txt");
 
         //Checks if file exists, if it doesn't, create file
         if(!file.exists()){
@@ -92,7 +93,7 @@ public class ClientRepository {
 
         //writes in database
         try{
-            FileWriter database = new FileWriter(file.getName(), true);
+            FileWriter database = new FileWriter(file.getAbsolutePath(), true);
             database.write(data);
             database.close();
             return true;
@@ -228,7 +229,7 @@ public class ClientRepository {
         //Replace original file by temp file
 
         file.delete();
-        file = new File("databaseClient.txt");
+        file = new File("./databases/databaseClient.txt");
         tempFile.renameTo(file);
 
         return true;
@@ -291,7 +292,7 @@ public class ClientRepository {
 
         //Replace original file by temp file
         file.delete();
-        file = new File("databaseClient.txt");
+        file = new File("./databases/databaseClient.txt");
         tempFile.renameTo(file);
 
         return true;
