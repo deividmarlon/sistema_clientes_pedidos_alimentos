@@ -1,8 +1,38 @@
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
 import java.io.File;
 
 public class Validation {
+
+    //reads input and returns it if its a valid positive int
+    //returns -1 if it's invalid
+    //pre-conditions: none
+    //post-conditions: returns a valid int or -1
+    public int getValidInt(){
+        int n;
+
+        Scanner scan = new Scanner(System.in);
+
+        //checks if id is an int
+        if(scan.hasNextInt()) {
+            n = scan.nextInt();
+        }else{
+            System.out.println("ERROR: Invalid input. Travels needs to be a positive integer.");
+            System.out.println();
+            scan.nextLine();
+            return -1;
+        }
+
+        //checks if id is less than 0
+        if(n < 0){
+            System.out.println("ERROR: Invalid input. Travels needs to be a positive integer.");
+            scan.nextLine();
+            return -1;
+        }
+
+       return n;
+    }
 
     //verifies if a number is even
     //pre-conditions: none
@@ -35,7 +65,7 @@ public class Validation {
             choice = -1;
         }
 
-       return choice;
+        return choice;
     }
 
     //will try to get a valid id from user and return -1 in case of invalid id
@@ -44,6 +74,7 @@ public class Validation {
     public int getValidId(String filename){
         int id;
 
+        File file = new File(filename);
         Scanner scan = new Scanner(System.in);
 
         //checks if id is an int
@@ -56,6 +87,25 @@ public class Validation {
             return -1;
         }
 
+        //if id==0 generates valid id
+        if(id==0){
+            if(file.exists() == false) return 1;
+            try{
+                int i = 1;
+                while(true){
+                    Scanner fileScan = new Scanner(file);
+                    if(checkDuplicatedID(i, fileScan) == false){
+                        fileScan.close();
+                        return i;
+                    }
+                    fileScan.close();
+                    i++;
+                }
+            }catch(IOException e){
+                e.printStackTrace();
+            }
+        }
+
         //checks if id is less than 0
         if(id < 0){
             System.out.println("ERROR: Invalid input. ID needs to be a positive integer.");
@@ -64,20 +114,22 @@ public class Validation {
         }
 
         //calls checkDuplicatedID to check if id already exists in database
-        File file = new File(filename);
-        if(file.exists() && id != -1){
+        if(file.exists()){
             try{
                 Scanner fileScan = new Scanner(file);
                 if(this.checkDuplicatedID(id, fileScan)) {
                     System.out.println("ERROR: ID already exists.");
                     System.out.println();
+                    fileScan.close();
                     return -1;
                 }
+                fileScan.close();
             }catch (FileNotFoundException e){
                 id = -1;
                 e.printStackTrace();
             }
         }
+
         return id;
     }
 

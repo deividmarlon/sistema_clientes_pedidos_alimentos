@@ -26,6 +26,7 @@ public class FoodInteractions {
 
         foodRepository.save(newFood);
 
+
     }
 
     //Asks user for food id and tries to update it database
@@ -56,7 +57,7 @@ public class FoodInteractions {
                         case 1: {
                             System.out.println("Insert a new name:");
                             food.name = scan.nextLine();
-                            foodRepository.update(food);
+                            foodRepository.update(food); //TODO here
                             break;
                         }
                         default: break;
@@ -106,6 +107,7 @@ public class FoodInteractions {
                 scan.nextLine();
             }
         }while(valid == false);
+
     }
 
     //Asks user for food id and tries to delete it from database
@@ -146,6 +148,7 @@ public class FoodInteractions {
     private void listFoods(){
 
         FoodRepository foodRepository = new FoodRepository();
+        Screen screen = new Screen();
 
         ArrayList<FoodEntity> foods = foodRepository.index();
 
@@ -164,21 +167,28 @@ public class FoodInteractions {
                 System.out.println("");
             });
         }
-
     }
 
     //manages the user choice from the client sub menu
     //pre-conditions: none
     //post-conditions:
     public void interact(int userChoice){
+        Screen screen = new Screen();
         switch(userChoice){
             case 1: createFood();
+                    listFoods();
+                    screen.waitInput();
                 break;
             case 2: editFood();
+                    listFoods();
+                    screen.waitInput();
                 break;
             case 3: deleteFood();
+                    listFoods();
+                    screen.waitInput();
                 break;
             case 4: showFood();
+                    screen.waitInput();
                 break;
             case 5: listFoods();
                 break;

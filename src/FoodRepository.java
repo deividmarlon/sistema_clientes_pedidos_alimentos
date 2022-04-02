@@ -166,7 +166,7 @@ public class FoodRepository {
     }
 
     public boolean delete(int id){
-        if(!(findById(id) != null)) return false;
+        if(findById(id) == null) return false;
 
         if(!file.exists()) return false;
 
@@ -200,6 +200,9 @@ public class FoodRepository {
                 idFile = Integer.parseInt(splittedLine[0]);
                 if(idFile != id){
                     fw.write(line+"\n");
+                }else{
+                    ClientInteractions client = new ClientInteractions();
+                    client.removeFoods(id);
                 }
             }
             fileText.close();
