@@ -14,7 +14,7 @@ public class FoodRepository {
 
         //Checks if file exists, if it doesn't, create file
         if(!file.exists()){
-            System.out.println("Database not found. Creating new " + file.getName() + "...");
+            System.out.println("Database not found\nCreating new " + file.getName() + "...");
             try{
                 if(file.createNewFile()) System.out.println(file.getName() + " created!");
             }catch(IOException e){

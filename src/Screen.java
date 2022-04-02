@@ -15,6 +15,7 @@ public class Screen {
     private final int NUMBER_CHOICES_REPORT_MENU = 3;
     private final int NUMBER_CHOICES_EDIT_CLIENT_MENU = 5;
 
+
     //prints header with client field names
     //pre-conditions: none
     //post-conditions: client field names printed
