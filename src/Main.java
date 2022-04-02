@@ -38,9 +38,10 @@ public class Main {
                     do {
                         choiceSubMenu = screen.foodMenu();
                         if (choiceSubMenu != 0) {
+                            System.out.println(choiceSubMenu);
                             //TODO create food class
-                            //Food food = new Food();
-                            //food.configFood(choiceSubMenu);
+                            FoodInteractions foodInteractions = new FoodInteractions();
+                            foodInteractions.interact(choiceSubMenu);
                         }
                     }while(choiceSubMenu != 0);
                     break;
@@ -49,13 +50,14 @@ public class Main {
                         choiceSubMenu = screen.reportMenu();
                         if (choiceSubMenu != 0) {
                             //TODO create report class
-                            //Report report = new Report
-                            //report.configReport(choiceSubMenu);
+                            ReportInteractions reportInteractions = new ReportInteractions();
+                            reportInteractions.interact(choiceSubMenu);
                         }
                     }while(choiceSubMenu != 0);
                     break;
             }
         }while(choiceMainMenu != 0);
+
         System.out.println("Thank you for using our software!");
     }
 }
