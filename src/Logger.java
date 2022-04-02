@@ -43,7 +43,7 @@ public class Logger {
 
         //Writes data string in log file
         try {
-            FileWriter database = new FileWriter(file.getName(), true);
+            FileWriter database = new FileWriter(file.getAbsolutePath(), true);
             database.write(data);
             database.close();
             return true;
