@@ -259,7 +259,6 @@ public class ClientRepository {
             }
         }
 
-        //TODO maybe different method
 
         //Writes tempFile with original file content but
         //without line that contains the id of parameter

@@ -90,7 +90,6 @@ public class ClientInteractions {
                                 System.out.println("Insert new birth date: (dd-mm-aaaa)");
                                 String temp = scan.nextLine();
                                 date = temp.split("-");
-                                //TODO create bool date
                                 if(!validate.validateDate(date)){
                                     System.out.println("ERROR: Invalid date");
                                     System.out.println();
@@ -200,7 +199,6 @@ public class ClientInteractions {
         Scanner scan = new Scanner(System.in);
         ClientRepository clientRepository = new ClientRepository();
 
-        //TODO list clients
         do{
             System.out.println("Insert client id");
             if(scan.hasNextInt()){
@@ -230,6 +228,7 @@ public class ClientInteractions {
         ClientRepository clientRepository = new ClientRepository();
         Screen screen = new Screen();
 
+        //gets list with all clients
         ArrayList<ClientEntity> clients = clientRepository.index();
 
         if(clients.isEmpty()){
@@ -237,10 +236,13 @@ public class ClientInteractions {
         }else{
             System.out.println("CLIENT LIST:\n");
 
+            //prints header
             screen.clientHeader();
 
+            //organizes client by id
             clients.sort(Comparator.comparing(client -> client.id));
 
+           //prints client
             clients.forEach((client) -> {
                 screen.printClient(client);
             });
@@ -255,15 +257,17 @@ public class ClientInteractions {
         ClientRepository database = new ClientRepository();
         ArrayList<ClientEntity> clientList = new ArrayList<ClientEntity>(0);
 
+        //gets client list
         clientList = database.index();
 
-
+        //runs through list and removes food from foodsHistory
         clientList.forEach((client) -> {
             for(int i=0;i < client.foodsHistory.size(); i++)
                 if(client.foodsHistory.get(i)==id) {
                     client.foodsHistory.remove(i);
                     i--;
                 }
+            //updates client
             database.update(client);
         });
     }
@@ -272,16 +276,23 @@ public class ClientInteractions {
     //pre-conditions: string formatted correctly [n.n.n...]
     //post-conditions: arraylist returned
     public ArrayList<Integer> getFoodHistory(String s){
+
+        //removes [] from string
         s = s.substring(s.indexOf("[") + 1);
         s = s.substring(0, s.indexOf("]"));
+
+        //splits string between dots
         String[] foodHistory = s.split("\\.");
         ArrayList<Integer> list = new ArrayList<Integer>(0);
 
+        //adds foodHistory to list
         if(foodHistory[0] != "") {
             for(String i : foodHistory) {
                 list.add(Integer.parseInt(i));
             }
         }
+
+        //returns list
         return list;
     }
 

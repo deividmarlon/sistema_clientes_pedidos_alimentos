@@ -23,17 +23,17 @@ public class Report {
     private void writeClients(){
         try{
             FileWriter reportFile = new FileWriter(file.getAbsolutePath(), true);
-
             ClientRepository clientRepository = new ClientRepository();
 
+            //gets client list
             ArrayList<ClientEntity> clients = clientRepository.index();
 
             if(clients.isEmpty()){
                 reportFile.write("No client was found in database");
             }else{
-
+                //sorts by id
                 clients.sort(Comparator.comparing(client -> client.id));
-
+                //writes clients
                 clients.forEach((client) -> {
                     try{
                         reportFile.write("Id: " + client.id + "\n");
@@ -77,6 +77,9 @@ public class Report {
         }
     }
 
+    //creates file to store a report
+    //pre-conditions: none
+    //post-conditions: report file created
     public boolean createReportFile(String fileName){
         boolean flag = false;
 
@@ -103,6 +106,9 @@ public class Report {
         return flag;
     }
 
+    //writes header in report file
+    //pre-conditions: none
+    //post-conditions: header written in report file
     public void writeHeader(int option){
 
         String reportTitle = "";
@@ -180,9 +186,9 @@ public class Report {
     private void writeFoods(){
         try{
             FileWriter reportFile = new FileWriter(file.getAbsolutePath(), true);
-
             FoodRepository foodRepository = new FoodRepository();
 
+            //gets food list
             ArrayList<FoodEntity> foods = foodRepository.index();
 
             if(foods.isEmpty()){
@@ -217,6 +223,9 @@ public class Report {
         }
     }
 
+    //call functions necessary to make client report file
+    //pre-conditions: none
+    //post-conditions: client report written
     public void generateReportClients(){
 
         if(createReportFile("Clients Report ")){
@@ -226,6 +235,9 @@ public class Report {
 
     }
 
+    //call functions necessary to make food report file
+    //pre-conditions: none
+    //post-conditions: food report written
     public void generateReportFoods(){
 
             if(createReportFile("Foods Report ")){

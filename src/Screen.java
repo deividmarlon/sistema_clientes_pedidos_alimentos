@@ -85,6 +85,7 @@ public class Screen {
         System.out.print(client.travels);
         System.out.print(" ");
 
+        //creates string with foodHistory in format [id1.id2.id3...]
         String foodHistory = "[";
         for(Integer i : client.foodsHistory){
             foodHistory = foodHistory.concat(i.toString() + ".");
@@ -94,6 +95,7 @@ public class Screen {
         System.out.print(foodHistory);
         System.out.print(" ");
 
+        //creates string with foodFullHistory in format [id1.id2.id3...]
         String foodFullHistory = "[";
         for(Integer i : client.foodsFullHistory){
             foodFullHistory = foodFullHistory.concat(i.toString() + ".");
@@ -293,6 +295,9 @@ public class Screen {
 
     }
 
+    //prints header with food field names
+    //pre-conditions: none
+    //post-conditions: food field names printed
     public void printFoodHeader(){
         System.out.print("ID");
 
@@ -308,6 +313,9 @@ public class Screen {
         System.out.println();
     }
 
+    //prints food information on screen
+    //pre-conditions: none
+    //post-conditions: food information printed on screen
     public void printFood(FoodEntity food){
         System.out.print(food.id);
         System.out.print(" ");

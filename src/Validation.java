@@ -38,6 +38,9 @@ public class Validation {
        return n;
     }
 
+    //reads input and returns it if it's a valid positive double
+    //pre-conditions: none
+    //post-conditions: returns positive double or -1
     public double getValidDouble(){
         double n;
 

@@ -30,7 +30,6 @@ public class Main {
                         if (choiceSubMenu != 0) {
                             ClientInteractions clientInteractions = new ClientInteractions();
                             clientInteractions.interact(choiceSubMenu);
-                            //TODO report.printClient()
                         }
                     }while(choiceSubMenu != 0);
                     break;
@@ -38,7 +37,6 @@ public class Main {
                     do {
                         choiceSubMenu = screen.foodMenu();
                         if (choiceSubMenu != 0) {
-                            //TODO create food class
                             FoodInteractions foodInteractions = new FoodInteractions();
                             foodInteractions.interact(choiceSubMenu);
                         }
@@ -48,7 +46,6 @@ public class Main {
                     do {
                         choiceSubMenu = screen.reportMenu();
                         if (choiceSubMenu != 0) {
-                            //TODO create report class
                             ReportInteractions reportInteractions = new ReportInteractions();
                             reportInteractions.interact(choiceSubMenu);
                         }
