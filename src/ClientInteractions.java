@@ -25,7 +25,7 @@ public class ClientInteractions {
         });
     }
 
-    //gets a string with numbers and returns a arraylist\
+    //gets a string with numbers and returns an arraylist\
     //pre-conditions: string formatted correctly [n.n.n...]
     //post-conditions: arraylist returned
     public ArrayList<Integer> getFoodHistory(String s){
@@ -118,12 +118,14 @@ public class ClientInteractions {
                             LocalDate birthDate = LocalDate.of(year, month, day);
                             client.birthDate = birthDate;
                             clientRepository.update(client);
+                            break;
                         }
                         case 3:{
                             System.out.println("Insert new number of travels:");
                             travels = validate.getValidInt();
                             client.travels = travels;
                             clientRepository.update(client);
+                            break;
                         }
                         case 4:{
                             FoodInteractions foods = new FoodInteractions();
@@ -146,6 +148,7 @@ public class ClientInteractions {
                                 }
                             }while(id != 0);
                             clientRepository.update(client);
+                            break;
                         }
                     }
                 }else System.out.println("Client doesn't exist.");
@@ -292,10 +295,6 @@ public class ClientInteractions {
             case 5: listClient();
                     screen.waitInput();
                 break;
-//            case 6: showFoodHistory();
-//                    break;
-//            case 7: showFullFoodHistory();
-//                    break;
             default: break;
         }
     }

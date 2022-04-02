@@ -2,6 +2,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
@@ -14,19 +15,76 @@ public class Report {
 
     private static final String AUTHORS_NAME = "Authors: Daniel Zonta Ojeda, Deivid Marlon";
 
+    //List foods
+    //pre-conditions: none
+    //post-conditions: list all foods in database
+    private void writeClients(){
+        try{
+            FileWriter reportFile = new FileWriter(file.getAbsolutePath(), true);
+
+            ClientRepository clientRepository = new ClientRepository();
+
+            ArrayList<ClientEntity> clients = clientRepository.index();
+
+            if(clients.isEmpty()){
+                reportFile.write("No client was found in database");
+            }else{
+
+                clients.sort(Comparator.comparing(client -> client.id));
+
+                clients.forEach((client) -> {
+                    try{
+                        reportFile.write("Id: " + client.id + "\n");
+                        reportFile.write("Name: " + client.name + "\n");
+
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                        reportFile.write("Birth Day: " + client.birthDate.format(formatter) + "\n");
+                        reportFile.write("Travels: " + client.travels + "\n");
+
+                        String foodHistory = "[";
+                        for(Integer i : client.foodsHistory){
+                            foodHistory = foodHistory.concat(i.toString() + ".");
+                        }
+                        foodHistory = foodHistory.concat("]");
+                        reportFile.write("Active foods: " + foodHistory + "\n");
+
+                        String foodFullHistory = "[";
+                        for(Integer i : client.foodsFullHistory){
+                            foodFullHistory = foodFullHistory.concat(i.toString() + ".");
+                        }
+                        foodFullHistory = foodFullHistory.concat("]");
+                        reportFile.write("Full food history: " + foodFullHistory + "\n");
+
+                        reportFile.write("\n");
+                    }catch(IOException e){
+                        System.out.println("ERROR: Could not write in report file");
+                        e.printStackTrace();
+                    }
+                });
+            }
+
+            reportFile.close();
+
+        }catch(IOException e){
+            System.out.println("ERROR: Could not write in report file");
+            e.printStackTrace();
+        }
+    }
+
     public boolean createReportFile(String fileName){
         boolean flag = false;
 
         Date now = new Date();
         SimpleDateFormat datePattern = new SimpleDateFormat ("yyyy-MM-dd'_'HH-mm-ss-SS");
 
-        file = new File(fileName+datePattern.format(now)+".txt");
+        new File("./logs").mkdirs();
+        file = new File("./logs/"+fileName+datePattern.format(now)+".txt");
 
         //Checks if file exists, if it doesn't, create file
         if(!file.exists()){
             System.out.println("Creating report file: " + file.getName() + " ...");
             try{
-                if(file.createNewFile()) System.out.println(file.getName() + " created!");
+                if(file.createNewFile()) System.out.println(file.getName() + " created in logs directory!");
                 flag = true;
             }catch(IOException e){
                 System.out.println("ERROR: Report file could not be created.");
@@ -48,7 +106,7 @@ public class Report {
         }
 
         try{
-            FileWriter reportFile = new FileWriter(file.getName(), true);
+            FileWriter reportFile = new FileWriter(file.getAbsolutePath(), true);
 
             int i;
             int messageSize = SOFTWARE_NAME.length();
@@ -111,14 +169,14 @@ public class Report {
     //post-conditions: list all foods in database
     private void writeFoods(){
         try{
-            FileWriter reportFile = new FileWriter(file.getName(), true);
+            FileWriter reportFile = new FileWriter(file.getAbsolutePath(), true);
 
             FoodRepository foodRepository = new FoodRepository();
 
             ArrayList<FoodEntity> foods = foodRepository.index();
 
             if(foods.isEmpty()){
-                reportFile.write("Any food was found in database");
+                reportFile.write("No food was found in database");
             }else{
 
                 foods.sort(Comparator.comparing(food -> food.id));
@@ -143,6 +201,15 @@ public class Report {
             System.out.println("ERROR: Could not write in report file");
             e.printStackTrace();
         }
+    }
+
+    public void generateReportClients(){
+
+        if(createReportFile("Clients Report ")){
+            writeHeader(1);
+            writeClients();
+        }
+
     }
 
     public void generateReportFoods(){

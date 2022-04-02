@@ -9,23 +9,9 @@ public class ReportInteractions {
     //post-conditions: list all foods in database
     private void reportClients(){
 
-        FoodRepository foodRepository = new FoodRepository();
+        Report report = new Report();
 
-        ArrayList<FoodEntity> foods = foodRepository.index();
-
-        if(foods.isEmpty()){
-            System.out.println("Any food was found in database");
-        }else{
-            System.out.println("FOOD LIST:\n");
-
-            foods.sort(Comparator.comparing(food -> food.id));
-
-            foods.forEach((food) -> {
-                System.out.println("Id: " + food.id);
-                System.out.println("Name: " + food.name);
-                System.out.println("");
-            });
-        }
+        report.generateReportClients();
 
     }
 

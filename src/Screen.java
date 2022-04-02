@@ -9,7 +9,7 @@ public class Screen {
     private static final String SOFTWARE_NAME = "Food orders management system";
     //number of choices from each menu
     private final int NUMBER_CHOICES_MAIN_MENU = 4;
-    private final int NUMBER_CHOICES_CLIENT_MENU = 8;
+    private final int NUMBER_CHOICES_CLIENT_MENU = 6;
     private final int NUMBER_CHOICES_FOOD_MENU = 6;
     private final int NUMBER_CHOICES_EDIT_FOOD_MENU = 2;
     private final int NUMBER_CHOICES_REPORT_MENU = 3;
@@ -223,9 +223,7 @@ public class Screen {
             System.out.println("3. Remove existing client.");
             System.out.println("4. Find client.");
             System.out.println("5. List client");
-            System.out.println("6. View client's foods.");
-            System.out.println("7. View full food history.");
-            System.out.println("8. Exit to main menu");
+            System.out.println("6. Exit to main menu");
 
             choice = validate.getValidChoice(NUMBER_CHOICES_CLIENT_MENU);
 
